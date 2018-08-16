@@ -11,7 +11,8 @@ public class DumpsterDiving : Script
     public static List<Model> Dumpsters = new List<Model>
     {
         new Model("prop_dumpster_02b"),
-        new Model("prop_dumpster_04a")
+        new Model("prop_dumpster_04a"),
+        new Model("prop_dumpster_01a")
     };
     /// <summary>
     /// The configuration for our current script.
@@ -26,7 +27,11 @@ public class DumpsterDiving : Script
 
         // Just an example message
         // TODO: Print the version and type of build
-        UI.Notify("DumpsterDiving has been loaded!");
+        UI.Notify(@"Dumpster Diving V has been loaded successfully!
+
+Version: Alpha 1.1
+Authors: Derpy-Canadian, Lemon
+Build Type: Debug|Any CPU");
     }
 
     private void OnTick(object Sender, EventArgs Args)
