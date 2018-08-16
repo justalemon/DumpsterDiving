@@ -1,4 +1,4 @@
-using GTA;
+﻿using GTA;
 using System;
 using System.Collections.Generic;
 
@@ -49,7 +49,7 @@ public class DumpsterDiving : Script
         // Iterate over the recent dumpsters
         foreach (Prop Recent in NearDumpsters)
         {
-            // If the dumpster is far and has a blip attached
+            // If the dumpster is far and has a blip attached, remove it
             if (World.GetDistance(Game.Player.Character.Position, Recent.Position) > 15f && Recent.CurrentBlip != null)
             {
                 Recent.CurrentBlip.Remove();
