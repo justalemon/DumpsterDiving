@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using System;
 using System.Collections.Generic;
 
@@ -35,8 +35,8 @@ public class DumpsterDiving : Script
             // Iterate over the props for the model
             foreach (Prop CurrentProp in World.GetAllProps(PropModel))
             {
-                // Check that the Prop is visible and is near 15 units to the player
-                if (CurrentProp.IsVisible && World.GetDistance(Game.Player.Character.Position, CurrentProp.Position) <= 15f)
+                // Check that the Prop is visible, is near 15 units to the player and it does not have a blip attached
+                if (CurrentProp.IsVisible && World.GetDistance(Game.Player.Character.Position, CurrentProp.Position) <= 15f && CurrentProp.CurrentBlip == null)
                 {
                     Blip PropBlip = CurrentProp.AddBlip();
                     PropBlip.Name = "Dumpster";
