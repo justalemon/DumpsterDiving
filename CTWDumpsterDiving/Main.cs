@@ -18,11 +18,14 @@ public class DumpsterDiving : Script
         new Model("prop_dumpster_04a"),
         new Model("prop_dumpster_4b")
     };
-    
     /// <summary>
     /// The configuration for our current script.
     /// </summary>
     public static ScriptSettings ScriptConfig = ScriptSettings.Load("scripts\\DumpsterDiving.ini");
+    /// <summary>
+    /// Proximity between the player and the dumpster to show a Blip.
+    /// </summary>
+    public static float Proximity = ScriptConfig.GetValue("CWDD", "Proximity", 25f);
 
     public DumpsterDiving()
     {
@@ -49,14 +52,14 @@ public class DumpsterDiving : Script
                     // Get the distance in units between the player and the Dumpster
                     float Distance = World.GetDistance(Game.Player.Character.Position, CurrentProp.Position);
                     // Check that the Prop is visible, is near 15 units to the player and it does not have a blip attached
-                    if (CurrentProp.IsVisible && Distance <= 25f && !CurrentProp.CurrentBlip.Exists())
+                    if (CurrentProp.IsVisible && Distance <= Proximity && !CurrentProp.CurrentBlip.Exists())
                     {
                         Blip PropBlip = CurrentProp.AddBlip();
                         PropBlip.Name = "Dumpster";
                         PropBlip.Sprite = BlipSprite.Devin;
                         PropBlip.Color = BlipColor.Green;
                     }
-                    if (CurrentProp.IsVisible && Distance <= 25f)
+                    if (CurrentProp.IsVisible && Distance <= Proximity)
                     {
                         float X = CurrentProp.Position.X;
                         float Y = CurrentProp.Position.Y;
