@@ -7,7 +7,27 @@ using System.Windows.Forms;
 
 public class DumpsterDiving : Script
 {
-    enum Items {Hotdog = 0, Hamburger = 1, MoldyHotDog = 2, ModlyHamburger = 3, Money = 4, Dildo = 5, Boot = 6, Fish = 7, Condom = 8, Pisol = 9, MicroSMG = 10, AR = 11, Shotgun = 12, SawnOffShotgun = 13, Grenades = 14, BZ = 15}
+    /// <summary>
+    /// The items that the player can get in the dumpsters.
+    /// </summary>
+    private enum Items {
+        Hotdog = 0,
+        Hamburger = 1,
+        MoldyHotDog = 2,
+        ModlyHamburger = 3,
+        Money = 4,
+        Dildo = 5,
+        Boot = 6,
+        Fish = 7,
+        Condom = 8,
+        Pisol = 9,
+        MicroSMG = 10,
+        AR = 11,
+        Shotgun = 12,
+        SawnOffShotgun = 13,
+        Grenades = 14,
+        BZ = 15
+    }
     private Ped playerPed = Game.Player.Character;
     private bool CanSearch;
     /// <summary>
