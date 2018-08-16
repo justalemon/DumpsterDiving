@@ -70,7 +70,8 @@ Build Type: Debug|Any CPU");
                         // If the dumpster is far and has a blip attached, remove it
                         if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
                     {
-                        UI.Notify("Deleting Prop" + CurrentProp.GetHashCode().ToString());
+                        if (ScriptConfig.GetValue("CWDD", "Debug", false))
+                            UI.Notify("Deleting blip: " + CurrentProp.CurrentBlip.GetHashCode().ToString());
                         CurrentProp.CurrentBlip.Remove();
                         
                     }
