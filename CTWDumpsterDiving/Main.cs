@@ -57,7 +57,7 @@ public class DumpsterDiving : Script
                         Blip PropBlip = CurrentProp.AddBlip();
                         PropBlip.Name = "Dumpster";
                         PropBlip.Sprite = BlipSprite.Devin;
-                        PropBlip.Color = BlipColor.Green;
+                        PropBlip.Color = BlipColor.Yellow;
                     }
 
                     float X = CurrentProp.Position.X;
