@@ -1,5 +1,5 @@
-﻿using GTA;
+using GTA;
 
-public class MainScript : Script
+public class DumpsterDiving : Script
 {
 }
