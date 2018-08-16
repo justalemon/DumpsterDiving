@@ -7,8 +7,8 @@ using System.Windows.Forms;
 
 public class DumpsterDiving : Script
 {
+    enum Items {Hotdog = 1, Hamburger = 2, MoldyHotDog = 3, ModlyHamburger = 4, Money = 5, Dildo = 6, Boot = 7, Fish = 8, Condom = 9, Pisol = 10, MicroSMG = 11, AR = 12, Shotgun = 13, SawnOffShotgun = 14, Grenades = 15, BZ = 16}
     private Ped playerPed = Game.Player.Character;
-    private Player player = Game.Player;
     /// <summary>
     /// A list that contains models of dumpsters.
     /// </summary>
@@ -54,7 +54,7 @@ public class DumpsterDiving : Script
                 // If the player is near and the dumpster is visible, enable the dumpster diving minigame on it
                 if (CurrentProp.IsVisible && Distance <= Proximity)
                 {
-                   // Add a blip if the user wants to
+                    // Add a blip if the user wants to
                     if (!CurrentProp.CurrentBlip.Exists() && ScriptConfig.GetValue("CWDD", "Blips", false))
                     {
                         Blip PropBlip = CurrentProp.AddBlip();
@@ -73,6 +73,7 @@ public class DumpsterDiving : Script
                     if (playerPed.Position.DistanceTo(SideMarkerPos) <= 1.5)
                     {
                         UI.ShowSubtitle("Press E to search dumpster", 1);
+                        SearchDumpster();
                     }
                 }
                 // If the dumpster is far and has a blip attached, remove it
@@ -104,5 +105,10 @@ public class DumpsterDiving : Script
                 }
             }
         }
+    }
+
+    static void SearchDumpster()
+    {
+        
     }
 }
