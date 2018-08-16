@@ -85,7 +85,7 @@ Build Type: Debug|Any CPU");
     private void OnKeyDown(object Sender, KeyEventArgs Args)
     {
         // In the case of pressing Page Down
-        if (Args.KeyCode == Keys.PageDown)
+        if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyBlipRemoval", Keys.None))
         {
             // Iterate over the map blips
             foreach (Blip CurrentBlip in World.GetActiveBlips())
