@@ -40,42 +40,39 @@ public class DumpsterDiving : Script
 
     private void OnTick(object Sender, EventArgs Args)
     {
-        // If the user wants blips, work on it
-        if (ScriptConfig.GetValue("CWDD", "Blips", false))
+        // Iterate over our Dumpster models
+        foreach (Model PropModel in Dumpsters)
         {
-            // Iterate over our Dumpster models
-            foreach (Model PropModel in Dumpsters)
+            // Iterate over the props for the model
+            foreach (Prop CurrentProp in World.GetAllProps(PropModel))
             {
-                // Iterate over the props for the model
-                foreach (Prop CurrentProp in World.GetAllProps(PropModel))
+                // Get the distance in units between the player and the Dumpster
+                float Distance = World.GetDistance(Game.Player.Character.Position, CurrentProp.Position);
+                // If the player is near and the dumpster is visible, enable the dumpster diving minigame on it
+                if (CurrentProp.IsVisible && Distance <= Proximity)
                 {
-                    // Get the distance in units between the player and the Dumpster
-                    float Distance = World.GetDistance(Game.Player.Character.Position, CurrentProp.Position);
-                    // Check that the Prop is visible, is near 15 units to the player and it does not have a blip attached
-                    if (CurrentProp.IsVisible && Distance <= Proximity && !CurrentProp.CurrentBlip.Exists())
+                   // Add a blip if the user wants to
+                    if (!CurrentProp.CurrentBlip.Exists() && ScriptConfig.GetValue("CWDD", "Blips", false))
                     {
                         Blip PropBlip = CurrentProp.AddBlip();
                         PropBlip.Name = "Dumpster";
                         PropBlip.Sprite = BlipSprite.Devin;
                         PropBlip.Color = BlipColor.Green;
                     }
-                    if (CurrentProp.IsVisible && Distance <= Proximity)
+
+                    float X = CurrentProp.Position.X;
+                    float Y = CurrentProp.Position.Y;
+                    float Z = CurrentProp.Position.Z + 2;
+                    World.DrawMarker(MarkerType.UpsideDownCone, new Vector3(X, Y, Z), Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.Red);
+                }
+                // If the dumpster is far and has a blip attached, remove it
+                if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
+                {
+                    if (ScriptConfig.GetValue("CWDD", "Debug", false))
                     {
-                        float X = CurrentProp.Position.X;
-                        float Y = CurrentProp.Position.Y;
-                        float Z = CurrentProp.Position.Z + 2;
-                        World.DrawMarker(MarkerType.UpsideDownCone, new Vector3(X, Y, Z), Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.Red);
+                        UI.Notify("Deleting blip: " + CurrentProp.CurrentBlip.GetHashCode().ToString());
                     }
-                    // If the dumpster is far and has a blip attached, remove it
-                    if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
-                    {
-                        if (ScriptConfig.GetValue("CWDD", "Debug", false))
-                        {
-                            UI.Notify("Deleting blip: " + CurrentProp.CurrentBlip.GetHashCode().ToString());
-                        }
-                        CurrentProp.CurrentBlip.Remove();
-                        
-                    }
+                    CurrentProp.CurrentBlip.Remove();
                 }
             }
         }
