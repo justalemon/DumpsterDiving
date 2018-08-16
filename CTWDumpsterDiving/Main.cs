@@ -32,11 +32,7 @@ public class DumpsterDiving : Script
 
         // Just an example message
         // TODO: Print the version and type of build
-        UI.Notify(@"Dumpster Diving V has been loaded successfully!
-
-Version: Alpha 1.1
-Authors: Derpy-Canadian, Lemon
-Build Type: Debug|Any CPU");
+        UI.Notify("DumpsterDiving has been loaded!");
     }
 
     private void OnTick(object Sender, EventArgs Args)
