@@ -1,4 +1,4 @@
-using GTA;
+﻿using GTA;
 using GTA.Math;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,8 @@ public class DumpsterDiving : Script
         new Model("prop_dumpster_02a"),
         new Model("prop_dumpster_02b"),
         new Model("prop_dumpster_04a"),
-        new Model("prop_dumpster_4b")
+        new Model("prop_dumpster_4b"),
+        new Model("prop_dumpster_3a")
     };
     /// <summary>
     /// The configuration for our current script.
