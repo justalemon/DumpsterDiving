@@ -7,8 +7,9 @@ using System.Windows.Forms;
 
 public class DumpsterDiving : Script
 {
-    enum Items {Hotdog = 1, Hamburger = 2, MoldyHotDog = 3, ModlyHamburger = 4, Money = 5, Dildo = 6, Boot = 7, Fish = 8, Condom = 9, Pisol = 10, MicroSMG = 11, AR = 12, Shotgun = 13, SawnOffShotgun = 14, Grenades = 15, BZ = 16}
+    enum Items {Hotdog = 0, Hamburger = 1, MoldyHotDog = 2, ModlyHamburger = 3, Money = 4, Dildo = 5, Boot = 6, Fish = 7, Condom = 8, Pisol = 9, MicroSMG = 10, AR = 11, Shotgun = 12, SawnOffShotgun = 13, Grenades = 14, BZ = 15}
     private Ped playerPed = Game.Player.Character;
+    private bool CanSearch;
     /// <summary>
     /// A list that contains models of dumpsters.
     /// </summary>
@@ -73,8 +74,9 @@ public class DumpsterDiving : Script
                     if (playerPed.Position.DistanceTo(SideMarkerPos) <= 1.5)
                     {
                         UI.ShowSubtitle("Press E to search dumpster", 1);
-                        SearchDumpster();
+                        CanSearch = true;
                     }
+                    
                 }
                 // If the dumpster is far and has a blip attached, remove it
                 if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
@@ -91,6 +93,10 @@ public class DumpsterDiving : Script
 
     private void OnKeyDown(object Sender, KeyEventArgs Args)
     {
+        if(Args.KeyCode == Keys.E && CanSearch)
+        {
+            UI.Notify("This Works :)");
+        }
         // In the case of pressing Page Down
         if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyBlipRemoval", Keys.None))
         {
@@ -109,6 +115,9 @@ public class DumpsterDiving : Script
 
     static void SearchDumpster()
     {
-        
+        Random random = new Random();
+        int randomNumber = random.Next(1, 15);
+        Items Item = (Items)randomNumber;
+        UI.Notify("You found a " + Item.ToString() + "!");
     }
 }
