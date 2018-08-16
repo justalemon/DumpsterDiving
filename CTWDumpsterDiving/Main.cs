@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using GTA.Math;
 using System;
 using System.Collections.Generic;
@@ -60,8 +60,13 @@ public class DumpsterDiving : Script
                         PropBlip.Color = BlipColor.Yellow;
                     }
 
-                    Vector3 Position = new Vector3(CurrentProp.Position.X, CurrentProp.Position.Y, CurrentProp.Position.Z + 2);
-                    World.DrawMarker(MarkerType.UpsideDownCone, Position, Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.YellowGreen);
+                    // Draw a marker that shows the dumpster position
+                    Vector3 TopMarkerPos = new Vector3(CurrentProp.Position.X, CurrentProp.Position.Y, CurrentProp.Position.Z + 2);
+                    World.DrawMarker(MarkerType.UpsideDownCone, TopMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.YellowGreen);
+                    // Draw a marker that will trigger the dumpster diving
+                    Vector3 SideMarkerPos = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
+                    // Vector3 SideMarkerPos = new Vector3(CurrentProp.Position.X + 1, CurrentProp.Position.Y, CurrentProp.Position.Z);
+                    World.DrawMarker(MarkerType.VerticalCylinder, SideMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.YellowGreen);
                 }
                 // If the dumpster is far and has a blip attached, remove it
                 if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
