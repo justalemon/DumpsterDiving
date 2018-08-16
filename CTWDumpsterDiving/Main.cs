@@ -1,6 +1,8 @@
 ﻿using GTA;
+using GTA.Math;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 public class DumpsterDiving : Script
@@ -16,6 +18,7 @@ public class DumpsterDiving : Script
         new Model("prop_dumpster_04a"),
         new Model("prop_dumpster_4b")
     };
+    
     /// <summary>
     /// The configuration for our current script.
     /// </summary>
@@ -57,11 +60,19 @@ Build Type: Debug|Any CPU");
                         PropBlip.Sprite = BlipSprite.Devin;
                         PropBlip.Color = BlipColor.Green;
                     }
-                    // If the dumpster is far and has a blip attached, remove it
-                    if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
+                    if (CurrentProp.IsVisible && Distance <= 25f)
+                    {
+                        float X = CurrentProp.Position.X;
+                        float Y = CurrentProp.Position.Y;
+                        float Z = CurrentProp.Position.Z + 2;
+                        World.DrawMarker(MarkerType.UpsideDownCone, new Vector3(X, Y, Z), Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.Red);
+                    }
+                        // If the dumpster is far and has a blip attached, remove it
+                        if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
                     {
                         UI.Notify("Deleting Prop" + CurrentProp.GetHashCode().ToString());
                         CurrentProp.CurrentBlip.Remove();
+                        
                     }
                 }
             }
