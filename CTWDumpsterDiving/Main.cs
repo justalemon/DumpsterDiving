@@ -64,6 +64,9 @@ public class DumpsterDiving : Script
 
     private void OnTick(object Sender, EventArgs Args)
     {
+        // By default, the user can't search the dumpster if is not near it
+        CanSearch = false;
+
         // Iterate over our Dumpster models
         foreach (Model PropModel in Dumpsters)
         {
@@ -91,12 +94,13 @@ public class DumpsterDiving : Script
                     Vector3 SideMarkerPos = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
                     // Vector3 SideMarkerPos = new Vector3(CurrentProp.Position.X + 1, CurrentProp.Position.Y, CurrentProp.Position.Z);
                     World.DrawMarker(MarkerType.VerticalCylinder, SideMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.YellowGreen);
+
+                    // If the player is near the dumpster, allow it to search
                     if (playerPed.Position.DistanceTo(SideMarkerPos) <= 1.5)
                     {
                         UI.ShowSubtitle("Press E to search dumpster", 1);
                         CanSearch = true;
                     }
-                    
                 }
                 // If the dumpster is far and has a blip attached, remove it
                 if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
