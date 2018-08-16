@@ -10,9 +10,11 @@ public class DumpsterDiving : Script
     /// </summary>
     public static List<Model> Dumpsters = new List<Model>
     {
+        new Model("prop_dumpster_01a"),
+        new Model("prop_dumpster_02a"),
         new Model("prop_dumpster_02b"),
         new Model("prop_dumpster_04a"),
-        new Model("prop_dumpster_01a")
+        new Model("prop_dumpster_4b")
     };
     /// <summary>
     /// The configuration for our current script.
