@@ -61,7 +61,7 @@ public class DumpsterDiving : Script
                     }
 
                     Vector3 Position = new Vector3(CurrentProp.Position.X, CurrentProp.Position.Y, CurrentProp.Position.Z + 2);
-                    World.DrawMarker(MarkerType.UpsideDownCone, Position, Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.Red);
+                    World.DrawMarker(MarkerType.UpsideDownCone, Position, Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.YellowGreen);
                 }
                 // If the dumpster is far and has a blip attached, remove it
                 if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
