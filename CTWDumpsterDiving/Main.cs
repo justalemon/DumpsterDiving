@@ -7,6 +7,8 @@ using System.Windows.Forms;
 
 public class DumpsterDiving : Script
 {
+    private Ped playerPed = Game.Player.Character;
+    private Player player = Game.Player;
     /// <summary>
     /// A list that contains models of dumpsters.
     /// </summary>
@@ -68,6 +70,10 @@ public class DumpsterDiving : Script
                     Vector3 SideMarkerPos = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
                     // Vector3 SideMarkerPos = new Vector3(CurrentProp.Position.X + 1, CurrentProp.Position.Y, CurrentProp.Position.Z);
                     World.DrawMarker(MarkerType.VerticalCylinder, SideMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.YellowGreen);
+                    if (playerPed.Position.DistanceTo(SideMarkerPos) <= 1.5)
+                    {
+                        UI.ShowSubtitle("Press E to search dumpster", 1);
+                    }
                 }
                 // If the dumpster is far and has a blip attached, remove it
                 if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
