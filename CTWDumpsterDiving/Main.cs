@@ -1,6 +1,7 @@
 ﻿using GTA;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 public class DumpsterDiving : Script
 {
@@ -12,15 +13,12 @@ public class DumpsterDiving : Script
         new Model("prop_dumpster_02b"),
         new Model("prop_dumpster_04a")
     };
-    /// <summary>
-    /// The dumpsters that should be near us.
-    /// </summary>
-    public static List<Prop> NearDumpsters = new List<Prop>();
 
     public DumpsterDiving()
     {
         // Add our events
         Tick += OnTick;
+        KeyDown += OnKeyDown;
 
         // Just an example message
         // TODO: Print the version and type of build
@@ -35,24 +33,40 @@ public class DumpsterDiving : Script
             // Iterate over the props for the model
             foreach (Prop CurrentProp in World.GetAllProps(PropModel))
             {
+                // Get the distance in units between the player and the Dumpster
+                float Distance = World.GetDistance(Game.Player.Character.Position, CurrentProp.Position);
                 // Check that the Prop is visible, is near 15 units to the player and it does not have a blip attached
-                if (CurrentProp.IsVisible && World.GetDistance(Game.Player.Character.Position, CurrentProp.Position) <= 15f && CurrentProp.CurrentBlip == null)
+                if (CurrentProp.IsVisible && Distance <= 25f && !CurrentProp.CurrentBlip.Exists())
                 {
                     Blip PropBlip = CurrentProp.AddBlip();
                     PropBlip.Name = "Dumpster";
                     PropBlip.Sprite = BlipSprite.Devin;
                     PropBlip.Color = BlipColor.Green;
                 }
+                // If the dumpster is far and has a blip attached, remove it
+                if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
+                {
+                    UI.Notify("Deleting Prop" + CurrentProp.GetHashCode().ToString());
+                    CurrentProp.CurrentBlip.Remove();
+                }
             }
         }
+    }
 
-        // Iterate over the recent dumpsters
-        foreach (Prop Recent in NearDumpsters)
+    private void OnKeyDown(object Sender, KeyEventArgs Args)
+    {
+        // In the case of pressing Page Down
+        if (Args.KeyCode == Keys.PageDown)
         {
-            // If the dumpster is far and has a blip attached, remove it
-            if (World.GetDistance(Game.Player.Character.Position, Recent.Position) > 15f && Recent.CurrentBlip != null)
+            // Iterate over the map blips
+            foreach (Blip CurrentBlip in World.GetActiveBlips())
             {
-                Recent.CurrentBlip.Remove();
+                // If is a D blip
+                if (CurrentBlip.Sprite == BlipSprite.Devin)
+                {
+                    // Remove it
+                    CurrentBlip.Remove();
+                }
             }
         }
     }
