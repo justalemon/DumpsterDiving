@@ -21,7 +21,7 @@ public class DumpsterDiving : Script
         Boot = 6,
         Fish = 7,
         Condom = 8,
-        Pisol = 9,
+        Pistol = 9,
         MicroSMG = 10,
         AR = 11,
         Shotgun = 12,
