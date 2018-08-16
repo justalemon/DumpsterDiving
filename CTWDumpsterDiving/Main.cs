@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
+using GTA.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +15,7 @@ public class DumpsterDiving : Script
         Hotdog = 0,
         Hamburger = 1,
         MoldyHotDog = 2,
-        ModlyHamburger = 3,
+        MoldyHamburger = 3,
         Money = 4,
         Dildo = 5,
         Boot = 6,
@@ -119,7 +120,11 @@ public class DumpsterDiving : Script
     {
         if(Args.KeyCode == Keys.E && CanSearch)
         {
-            UI.Notify("This Works :)");
+            Game.FadeScreenOut(1000);
+            Wait(3000);
+            SearchDumpster();
+            Wait(1000);
+            Game.FadeScreenIn(1000);
         }
         // In the case of pressing Page Down
         if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyBlipRemoval", Keys.None))
