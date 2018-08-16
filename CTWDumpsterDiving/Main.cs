@@ -67,11 +67,13 @@ Build Type: Debug|Any CPU");
                         float Z = CurrentProp.Position.Z + 2;
                         World.DrawMarker(MarkerType.UpsideDownCone, new Vector3(X, Y, Z), Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.Red);
                     }
-                        // If the dumpster is far and has a blip attached, remove it
-                        if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
+                    // If the dumpster is far and has a blip attached, remove it
+                    if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
                     {
                         if (ScriptConfig.GetValue("CWDD", "Debug", false))
+                        {
                             UI.Notify("Deleting blip: " + CurrentProp.CurrentBlip.GetHashCode().ToString());
+                        }
                         CurrentProp.CurrentBlip.Remove();
                         
                     }
