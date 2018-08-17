@@ -123,7 +123,7 @@ public class DumpsterDiving : Script
         if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None) && CanSearch)
         {
             Game.FadeScreenOut(1000);
-            Wait(3000);
+            Wait(1000);
             SearchDumpster();
             Wait(1000);
             Game.FadeScreenIn(1000);
