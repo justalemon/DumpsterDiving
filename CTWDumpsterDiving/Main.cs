@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
+using GTA.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,6 +8,32 @@ using System.Windows.Forms;
 
 public class DumpsterDiving : Script
 {
+    /// <summary>
+    /// If the player has a dumpster that can be used.
+    /// This changes every tick.
+    /// </summary>
+    private bool CanSearch = false;
+    /// <summary>
+    /// The items that the player can get in the dumpsters.
+    /// </summary>
+    private enum Items {
+        Hotdog = 0,
+        Hamburger = 1,
+        MoldyHotDog = 2,
+        MoldyHamburger = 3,
+        Money = 4,
+        Dildo = 5,
+        Boot = 6,
+        Fish = 7,
+        Condom = 8,
+        Pistol = 9,
+        MicroSMG = 10,
+        AR = 11,
+        Shotgun = 12,
+        SawnOffShotgun = 13,
+        Grenades = 14,
+        BZ = 15
+    }
     /// <summary>
     /// A list that contains models of dumpsters.
     /// </summary>
@@ -41,6 +68,9 @@ public class DumpsterDiving : Script
 
     private void OnTick(object Sender, EventArgs Args)
     {
+        // By default, the user can't search the dumpster if is not near it
+        CanSearch = false;
+
         // Iterate over our Dumpster models
         foreach (Model PropModel in Dumpsters)
         {
@@ -52,7 +82,7 @@ public class DumpsterDiving : Script
                 // If the player is near and the dumpster is visible, enable the dumpster diving minigame on it
                 if (CurrentProp.IsVisible && Distance <= Proximity)
                 {
-                   // Add a blip if the user wants to
+                    // Add a blip if the user wants to
                     if (!CurrentProp.CurrentBlip.Exists() && ScriptConfig.GetValue("CWDD", "Blips", false))
                     {
                         Blip PropBlip = CurrentProp.AddBlip();
@@ -65,9 +95,14 @@ public class DumpsterDiving : Script
                     Vector3 TopMarkerPos = new Vector3(CurrentProp.Position.X, CurrentProp.Position.Y, CurrentProp.Position.Z + 2);
                     World.DrawMarker(MarkerType.UpsideDownCone, TopMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.YellowGreen);
                     // Draw a marker that will trigger the dumpster diving
-                    Vector3 SideMarkerPos = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
-                    // Vector3 SideMarkerPos = new Vector3(CurrentProp.Position.X + 1, CurrentProp.Position.Y, CurrentProp.Position.Z);
-                    World.DrawMarker(MarkerType.VerticalCylinder, SideMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.YellowGreen);
+                    Vector3 Front = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
+
+                    // If the player is near the dumpster, allow it to search
+                    if (Game.Player.Character.Position.DistanceTo(Front) <= 1.5)
+                    {
+                        UI.ShowSubtitle("Press " + ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None).ToString() + " to search dumpster", 1);
+                        CanSearch = true;
+                    }
                 }
                 // If the dumpster is far and has a blip attached, remove it
                 if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
@@ -84,6 +119,15 @@ public class DumpsterDiving : Script
 
     private void OnKeyDown(object Sender, KeyEventArgs Args)
     {
+        // If the player preses E and is a dumpster available, "loot it"
+        if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None) && CanSearch)
+        {
+            Game.FadeScreenOut(1000);
+            Wait(1000);
+            SearchDumpster();
+            Wait(1000);
+            Game.FadeScreenIn(1000);
+        }
         // In the case of pressing Page Down
         if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyBlipRemoval", Keys.None))
         {
@@ -98,5 +142,81 @@ public class DumpsterDiving : Script
                 }
             }
         }
+    }
+
+    private void SearchDumpster()
+    {
+        // Temporary variables to know if the player has found a weapon
+        WeaponHash Weapon = WeaponHash.Pistol;
+        bool WeaponFound = false;
+
+        // Get a random item from the enum at the top
+        Random Generator = new Random();
+        int Number = Generator.Next(0, Enum.GetValues(typeof(Items)).Length);
+        Items Item = (Items)Number;
+
+        // Hotdog's and Hamburgers restore the entire health bar
+        if (Item == Items.Hotdog || Item == Items.Hamburger)
+        {
+            int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
+            Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
+        }
+        // Money gives a random ammount between 10 and 100
+        else if (Item == Items.Money)
+        {
+            Game.Player.Money += Generator.Next(10, 100);
+        }
+        // Now, the whole list of weapons
+        else if (Item == Items.Pistol)
+        {
+            Weapon = WeaponHash.Pistol;
+            WeaponFound = true;
+        }
+        else if (Item == Items.MicroSMG)
+        {
+            Weapon = WeaponHash.MicroSMG;
+            WeaponFound = true;
+        }
+        else if (Item == Items.AR)
+        {
+            Weapon = WeaponHash.AssaultRifle;
+            WeaponFound = true;
+        }
+        else if (Item == Items.Shotgun)
+        {
+            Weapon = WeaponHash.PumpShotgun;
+            WeaponFound = true;
+        }
+        else if (Item == Items.SawnOffShotgun)
+        {
+            Weapon = WeaponHash.SawnOffShotgun;
+            WeaponFound = true;
+        }
+        else if (Item == Items.Grenades)
+        {
+            Weapon = WeaponHash.Grenade;
+            WeaponFound = true;
+        }
+        else if (Item == Items.BZ)
+        {
+            Weapon = WeaponHash.BZGas;
+            WeaponFound = true;
+        }
+
+        // Give a weapon or ammo
+        if (WeaponFound)
+        {
+            // If the player does not have the weapon, give one to him
+            if (!Game.Player.Character.Weapons.HasWeapon(Weapon))
+            {
+                Game.Player.Character.Weapons.Give(Weapon, 0, true, true);
+            }
+
+            // Then, select the weapon and give 2 magazines
+            Game.Player.Character.Weapons.Select(Weapon);
+            Game.Player.Character.Weapons.Current.Ammo += (Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2);
+        }
+
+        UI.Notify("You found a " + Item.ToString() + "!");
     }
 }
