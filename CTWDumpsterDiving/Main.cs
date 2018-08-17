@@ -28,7 +28,6 @@ public class DumpsterDiving : Script
         Grenades = 14,
         BZ = 15
     }
-    private Ped playerPed = Game.Player.Character;
     private bool CanSearch;
     /// <summary>
     /// A list that contains models of dumpsters.
@@ -96,7 +95,7 @@ public class DumpsterDiving : Script
                     World.DrawMarker(MarkerType.VerticalCylinder, SideMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.YellowGreen);
 
                     // If the player is near the dumpster, allow it to search
-                    if (playerPed.Position.DistanceTo(SideMarkerPos) <= 1.5)
+                    if (Game.Player.Character.Position.DistanceTo(SideMarkerPos) <= 1.5)
                     {
                         UI.ShowSubtitle("Press E to search dumpster", 1);
                         CanSearch = true;
