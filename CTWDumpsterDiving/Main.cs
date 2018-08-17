@@ -1,5 +1,6 @@
-using GTA;
+﻿using GTA;
 using GTA.Math;
+using GTA.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -145,9 +146,77 @@ public class DumpsterDiving : Script
 
     private void SearchDumpster()
     {
-        Random random = new Random();
-        int randomNumber = random.Next(1, 15);
-        Items Item = (Items)randomNumber;
+        // Temporary variables to know if the player has found a weapon
+        WeaponHash Weapon = WeaponHash.Pistol;
+        bool WeaponFound = false;
+
+        // Get a random item from the enum at the top
+        Random Generator = new Random();
+        int Number = Generator.Next(0, Enum.GetValues(typeof(Items)).Length);
+        Items Item = (Items)Number;
+
+        // Hotdog's and Hamburgers restore the entire health bar
+        if (Item == Items.Hotdog || Item == Items.Hamburger)
+        {
+            int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
+            Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
+        }
+        // Money gives a random ammount between 10 and 100
+        else if (Item == Items.Money)
+        {
+            Game.Player.Money += Generator.Next(10, 100);
+        }
+        // Now, the whole list of weapons
+        else if (Item == Items.Pistol)
+        {
+            Weapon = WeaponHash.Pistol;
+            WeaponFound = true;
+        }
+        else if (Item == Items.MicroSMG)
+        {
+            Weapon = WeaponHash.MicroSMG;
+            WeaponFound = true;
+        }
+        else if (Item == Items.AR)
+        {
+            Weapon = WeaponHash.AssaultRifle;
+            WeaponFound = true;
+        }
+        else if (Item == Items.Shotgun)
+        {
+            Weapon = WeaponHash.PumpShotgun;
+            WeaponFound = true;
+        }
+        else if (Item == Items.SawnOffShotgun)
+        {
+            Weapon = WeaponHash.SawnOffShotgun;
+            WeaponFound = true;
+        }
+        else if (Item == Items.Grenades)
+        {
+            Weapon = WeaponHash.Grenade;
+            WeaponFound = true;
+        }
+        else if (Item == Items.BZ)
+        {
+            Weapon = WeaponHash.BZGas;
+            WeaponFound = true;
+        }
+
+        // Give a weapon or ammo
+        if (WeaponFound)
+        {
+            // If the player does not have the weapon, give one to him
+            if (!Game.Player.Character.Weapons.HasWeapon(Weapon))
+            {
+                Game.Player.Character.Weapons.Give(Weapon, 0, true, true);
+            }
+
+            // Then, select the weapon and give 2 magazines
+            Game.Player.Character.Weapons.Select(Weapon);
+            Game.Player.Character.Weapons.Current.Ammo += (Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2);
+        }
+
         UI.Notify("You found a " + Item.ToString() + "!");
     }
 }
