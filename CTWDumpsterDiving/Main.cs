@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using GTA.Math;
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,11 @@ using System.Windows.Forms;
 
 public class DumpsterDiving : Script
 {
+    /// <summary>
+    /// If the player has a dumpster that can be used.
+    /// This changes every tick.
+    /// </summary>
+    private bool CanSearch = false;
     /// <summary>
     /// The items that the player can get in the dumpsters.
     /// </summary>
@@ -28,7 +33,6 @@ public class DumpsterDiving : Script
         Grenades = 14,
         BZ = 15
     }
-    private bool CanSearch;
     /// <summary>
     /// A list that contains models of dumpsters.
     /// </summary>
