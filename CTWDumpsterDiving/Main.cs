@@ -94,11 +94,10 @@ public class DumpsterDiving : Script
                     Vector3 TopMarkerPos = new Vector3(CurrentProp.Position.X, CurrentProp.Position.Y, CurrentProp.Position.Z + 2);
                     World.DrawMarker(MarkerType.UpsideDownCone, TopMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.YellowGreen);
                     // Draw a marker that will trigger the dumpster diving
-                    Vector3 SideMarkerPos = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
-                    World.DrawMarker(MarkerType.VerticalCylinder, SideMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.YellowGreen);
+                    Vector3 Front = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
 
                     // If the player is near the dumpster, allow it to search
-                    if (Game.Player.Character.Position.DistanceTo(SideMarkerPos) <= 1.5)
+                    if (Game.Player.Character.Position.DistanceTo(Front) <= 1.5)
                     {
                         UI.ShowSubtitle("Press " + ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None).ToString() + " to search dumpster", 1);
                         CanSearch = true;
