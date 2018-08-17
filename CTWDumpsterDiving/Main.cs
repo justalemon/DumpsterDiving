@@ -119,7 +119,8 @@ public class DumpsterDiving : Script
 
     private void OnKeyDown(object Sender, KeyEventArgs Args)
     {
-        if(Args.KeyCode == Keys.E && CanSearch)
+        // If the player preses E and is a dumpster available, "loot it"
+        if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None) && CanSearch)
         {
             Game.FadeScreenOut(1000);
             Wait(3000);
