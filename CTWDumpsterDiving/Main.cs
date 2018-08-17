@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using GTA.Math;
 using System;
 using System.Collections.Generic;
@@ -100,7 +100,7 @@ public class DumpsterDiving : Script
                     // If the player is near the dumpster, allow it to search
                     if (Game.Player.Character.Position.DistanceTo(SideMarkerPos) <= 1.5)
                     {
-                        UI.ShowSubtitle("Press E to search dumpster", 1);
+                        UI.ShowSubtitle("Press " + ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None).ToString() + " to search dumpster", 1);
                         CanSearch = true;
                     }
                 }
