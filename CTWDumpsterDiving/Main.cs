@@ -1,4 +1,4 @@
-using GTA;
+﻿using GTA;
 using GTA.Math;
 using System;
 using System.Collections.Generic;
@@ -95,7 +95,6 @@ public class DumpsterDiving : Script
                     World.DrawMarker(MarkerType.UpsideDownCone, TopMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.YellowGreen);
                     // Draw a marker that will trigger the dumpster diving
                     Vector3 SideMarkerPos = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
-                    // Vector3 SideMarkerPos = new Vector3(CurrentProp.Position.X + 1, CurrentProp.Position.Y, CurrentProp.Position.Z);
                     World.DrawMarker(MarkerType.VerticalCylinder, SideMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.YellowGreen);
 
                     // If the player is near the dumpster, allow it to search
@@ -144,7 +143,7 @@ public class DumpsterDiving : Script
         }
     }
 
-    static void SearchDumpster()
+    private void SearchDumpster()
     {
         Random random = new Random();
         int randomNumber = random.Next(1, 15);
