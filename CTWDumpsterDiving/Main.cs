@@ -156,51 +156,91 @@ public class DumpsterDiving : Script
         Items Item = (Items)Number;
 
         // Hotdog's and Hamburgers restore the entire health bar
-        if (Item == Items.Hotdog || Item == Items.Hamburger)
+        if (Item == Items.Hamburger)
         {
             int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
             Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
+            UI.Notify("You found a Hamburger!");
+        }
+        else if (Item == Items.Hotdog)
+        {
+            int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
+            Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
+            UI.Notify("You found a Hotdog!");
         }
         // Money gives a random ammount between 10 and 100
         else if (Item == Items.Money)
         {
-            Game.Player.Money += Generator.Next(10, 100);
+            int amountofmoney = Generator.Next(10, 100);
+            Game.Player.Money += amountofmoney;
+            UI.Notify("You found $" + amountofmoney + "!");
         }
         // Now, the whole list of weapons
         else if (Item == Items.Pistol)
         {
             Weapon = WeaponHash.Pistol;
             WeaponFound = true;
+            UI.Notify("You found a Pistol!");
         }
         else if (Item == Items.MicroSMG)
         {
             Weapon = WeaponHash.MicroSMG;
             WeaponFound = true;
+            UI.Notify("You found a Micro SMG!");
         }
         else if (Item == Items.AR)
         {
             Weapon = WeaponHash.AssaultRifle;
             WeaponFound = true;
+            UI.Notify("You found an Assault Rifle!");
         }
         else if (Item == Items.Shotgun)
         {
             Weapon = WeaponHash.PumpShotgun;
             WeaponFound = true;
+            UI.Notify("You found a Pump Shotgun!");
         }
         else if (Item == Items.SawnOffShotgun)
         {
             Weapon = WeaponHash.SawnOffShotgun;
             WeaponFound = true;
+            UI.Notify("You found a Sawn Off Shotgun!");
         }
         else if (Item == Items.Grenades)
         {
             Weapon = WeaponHash.Grenade;
             WeaponFound = true;
+            UI.Notify("You found a Grenade!");
         }
         else if (Item == Items.BZ)
         {
             Weapon = WeaponHash.BZGas;
             WeaponFound = true;
+            UI.Notify("You found BZ Gas!");
+        }
+        else if (Item == Items.Condom)
+        {
+            UI.Notify("You found a Condom.");
+        }
+        else if (Item == Items.Boot)
+        {
+            UI.Notify("You found a Boot.");
+        }
+        else if (Item == Items.Fish)
+        {
+            UI.Notify("You found a fish carcass.");
+        }
+        else if (Item == Items.Dildo)
+        {
+            UI.Notify("You found a Dildo.");
+        }
+        else if (Item == Items.MoldyHamburger)
+        {
+            UI.Notify("You found a Moldy Hamburger.");
+        }
+        else if (Item == Items.MoldyHotDog)
+        {
+            UI.Notify("You found a Moldy Hotdog.");
         }
 
         // Give a weapon or ammo
@@ -216,7 +256,5 @@ public class DumpsterDiving : Script
             Game.Player.Character.Weapons.Select(Weapon);
             Game.Player.Character.Weapons.Current.Ammo += (Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2);
         }
-
-        UI.Notify("You found a " + Item.ToString() + "!");
     }
 }
