@@ -169,9 +169,7 @@ public class DumpsterDiving : Script
                     Text = Strings.Hamburger;
                     break;
             }
-
-            int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
-            Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
+            Heal();
         }
         // Money gives a random ammount between 10 and 100
         else if (Item == Items.Money)
@@ -264,5 +262,11 @@ public class DumpsterDiving : Script
 
         // Notify the user about what has been found on the dumpster
         UI.Notify(string.Format(Strings.Found, Text));
+    }
+
+    private static void Heal()
+    {
+        int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
+        Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
     }
 }
