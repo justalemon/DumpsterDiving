@@ -148,8 +148,6 @@ public class DumpsterDiving : Script
     private void SearchDumpster()
     {
         // Temporary variables to know if the player has found a weapon
-        WeaponHash Weapon = WeaponHash.Pistol;
-        bool WeaponFound = false;
         string Text = string.Empty;
 
         // Get a random item from the enum at the top
@@ -157,109 +155,70 @@ public class DumpsterDiving : Script
         int Number = Generator.Next(0, Enum.GetValues(typeof(Items)).Length);
         Items Item = (Items)Number;
 
-        // Hotdog's and Hamburgers restore the entire health bar
-        if (Item == Items.Hotdog || Item == Items.Hamburger)
+        // See what the user got
+        switch (Item)
         {
-            switch (Item)
-            {
-                case Items.Hotdog:
-                    Text = Strings.Hotdog;
-                    break;
-                case Items.Hamburger:
-                    Text = Strings.Hamburger;
-                    break;
-            }
-            Heal();
+            case Items.Hotdog:
+                Text = Strings.Hotdog;
+                Heal();
+                break;
+            case Items.Hamburger:
+                Text = Strings.Hamburger;
+                Heal();
+                break;
+            case Items.MoldyHotDog:
+                Text = Strings.MoldyHotdog;
+                break;
+            case Items.MoldyHamburger:
+                Text = Strings.MoldyHamburger;
+                break;
+            case Items.Money:
+                int Money = Generator.Next(10, 100);
+                Text = string.Format(Strings.Hamburger, Money);
+                Game.Player.Money += Money;
+                break;
+            case Items.Dildo:
+                Text = Strings.Dildo;
+                break;
+            case Items.Boot:
+                Text = Strings.Boot;
+                break;
+            case Items.Fish:
+                Text = Strings.Fish;
+                break;
+            case Items.Condom:
+                Text = Strings.Condom;
+                break;
+            case Items.Pistol:
+                Text = Strings.GunPistol;
+                Weapon(WeaponHash.Pistol);
+                break;
+            case Items.MicroSMG:
+                Text = Strings.GunMicro;
+                Weapon(WeaponHash.MicroSMG);
+                break;
+            case Items.AssaultRifle:
+                Text = Strings.GunAssaultRifle;
+                Weapon(WeaponHash.AssaultRifle);
+                break;
+            case Items.Shotgun:
+                Text = Strings.GunShotgun;
+                Weapon(WeaponHash.PumpShotgun);
+                break;
+            case Items.SawnOffShotgun:
+                Text = Strings.GunSawnOff;
+                Weapon(WeaponHash.SawnOffShotgun);
+                break;
+            case Items.Grenades:
+                Text = Strings.GunGrenades;
+                Weapon(WeaponHash.Grenade);
+                break;
+            case Items.BZ:
+                Text = Strings.GunBZ;
+                Weapon(WeaponHash.BZGas);
+                break;
         }
-        // Money gives a random ammount between 10 and 100
-        else if (Item == Items.Money)
-        {
-            int Money = Generator.Next(10, 100);
-            Text = string.Format(Strings.Hamburger, Money);
-            Game.Player.Money += Money;
-        }
-        // Now, the whole list of weapons
-        else if (Item == Items.Pistol)
-        {
-            Weapon = WeaponHash.Pistol;
-            Text = Strings.GunPistol;
-            WeaponFound = true;
-        }
-        else if (Item == Items.MicroSMG)
-        {
-            Weapon = WeaponHash.MicroSMG;
-            Text = Strings.GunMicro;
-            WeaponFound = true;
-        }
-        else if (Item == Items.AssaultRifle)
-        {
-            Weapon = WeaponHash.AssaultRifle;
-            Text = Strings.GunAssaultRifle;
-            WeaponFound = true;
-        }
-        else if (Item == Items.Shotgun)
-        {
-            Weapon = WeaponHash.PumpShotgun;
-            Text = Strings.GunShotgun;
-            WeaponFound = true;
-        }
-        else if (Item == Items.SawnOffShotgun)
-        {
-            Weapon = WeaponHash.SawnOffShotgun;
-            Text = Strings.GunSawnOff;
-            WeaponFound = true;
-        }
-        else if (Item == Items.Grenades)
-        {
-            Weapon = WeaponHash.Grenade;
-            Text = Strings.GunGrenades;
-            WeaponFound = true;
-        }
-        else if (Item == Items.BZ)
-        {
-            Weapon = WeaponHash.BZGas;
-            Text = Strings.GunBZ;
-            WeaponFound = true;
-        }
-        else if (Item == Items.Condom)
-        {
-            Text = Strings.Condom;
-        }
-        else if (Item == Items.Boot)
-        {
-            Text = Strings.Boot;
-        }
-        else if (Item == Items.Fish)
-        {
-            Text = Strings.Fish;
-        }
-        else if (Item == Items.MoldyHamburger)
-        {
-            Text = Strings.MoldyHamburger;
-        }
-        else if (Item == Items.MoldyHotDog)
-        {
-            Text = Strings.MoldyHotdog;
-        }
-        else if (Item == Items.Dildo)
-        {
-            Text = Strings.Dildo;
-        }
-
-        // Give a weapon or ammo
-        if (WeaponFound)
-        {
-            // If the player does not have the weapon, give one to him
-            if (!Game.Player.Character.Weapons.HasWeapon(Weapon))
-            {
-                Game.Player.Character.Weapons.Give(Weapon, 0, true, true);
-            }
-
-            // Then, select the weapon and give 2 magazines
-            Game.Player.Character.Weapons.Select(Weapon);
-            Game.Player.Character.Weapons.Current.Ammo += (Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2);
-        }
-
+        
         // Notify the user about what has been found on the dumpster
         UI.Notify(string.Format(Strings.Found, Text));
     }
@@ -268,5 +227,18 @@ public class DumpsterDiving : Script
     {
         int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
         Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
+    }
+
+    private static void Weapon(WeaponHash Weapon)
+    {
+        // If the player does not have the weapon, give one to him
+        if (!Game.Player.Character.Weapons.HasWeapon(Weapon))
+        {
+            Game.Player.Character.Weapons.Give(Weapon, 0, true, true);
+        }
+
+        // Then, select the weapon and give 2 magazines
+        Game.Player.Character.Weapons.Select(Weapon);
+        Game.Player.Character.Weapons.Current.Ammo += (Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2);
     }
 }
