@@ -1,4 +1,5 @@
-﻿using GTA;
+﻿using CTWDumpsterDiving.Properties;
+using GTA;
 using GTA.Math;
 using GTA.Native;
 using System;
@@ -28,7 +29,7 @@ public class DumpsterDiving : Script
         Condom = 8,
         Pistol = 9,
         MicroSMG = 10,
-        AR = 11,
+        AssaultRifle = 11,
         Shotgun = 12,
         SawnOffShotgun = 13,
         Grenades = 14,
@@ -63,7 +64,7 @@ public class DumpsterDiving : Script
 
         // Just an example message
         // TODO: Print the version and type of build
-        UI.Notify("DumpsterDiving has been loaded!");
+        UI.Notify(Strings.Loaded);
     }
 
     private void OnTick(object Sender, EventArgs Args)
@@ -86,7 +87,7 @@ public class DumpsterDiving : Script
                     if (!CurrentProp.CurrentBlip.Exists() && ScriptConfig.GetValue("CWDD", "Blips", false))
                     {
                         Blip PropBlip = CurrentProp.AddBlip();
-                        PropBlip.Name = "Dumpster";
+                        PropBlip.Name = Strings.Dumpster;
                         PropBlip.Sprite = BlipSprite.Devin;
                         PropBlip.Color = BlipColor.Yellow;
                     }
@@ -100,7 +101,7 @@ public class DumpsterDiving : Script
                     // If the player is near the dumpster, allow it to search
                     if (Game.Player.Character.Position.DistanceTo(Front) <= 1.5)
                     {
-                        UI.ShowSubtitle("Press " + ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None).ToString() + " to search dumpster", 1);
+                        UI.ShowSubtitle(string.Format(Strings.PressNotification, ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None).ToString()), 1);
                         CanSearch = true;
                     }
                 }
@@ -149,6 +150,7 @@ public class DumpsterDiving : Script
         // Temporary variables to know if the player has found a weapon
         WeaponHash Weapon = WeaponHash.Pistol;
         bool WeaponFound = false;
+        string Text = string.Empty;
 
         // Get a random item from the enum at the top
         Random Generator = new Random();
@@ -158,49 +160,92 @@ public class DumpsterDiving : Script
         // Hotdog's and Hamburgers restore the entire health bar
         if (Item == Items.Hotdog || Item == Items.Hamburger)
         {
+            switch (Item)
+            {
+                case Items.Hotdog:
+                    Text = Strings.Hotdog;
+                    break;
+                case Items.Hamburger:
+                    Text = Strings.Hamburger;
+                    break;
+            }
+
             int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
             Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
         }
         // Money gives a random ammount between 10 and 100
         else if (Item == Items.Money)
         {
-            Game.Player.Money += Generator.Next(10, 100);
+            int Money = Generator.Next(10, 100);
+            Text = string.Format(Strings.Hamburger, Money);
+            Game.Player.Money += Money;
         }
         // Now, the whole list of weapons
         else if (Item == Items.Pistol)
         {
             Weapon = WeaponHash.Pistol;
+            Text = Strings.GunPistol;
             WeaponFound = true;
         }
         else if (Item == Items.MicroSMG)
         {
             Weapon = WeaponHash.MicroSMG;
+            Text = Strings.GunMicro;
             WeaponFound = true;
         }
-        else if (Item == Items.AR)
+        else if (Item == Items.AssaultRifle)
         {
             Weapon = WeaponHash.AssaultRifle;
+            Text = Strings.GunAssaultRifle;
             WeaponFound = true;
         }
         else if (Item == Items.Shotgun)
         {
             Weapon = WeaponHash.PumpShotgun;
+            Text = Strings.GunShotgun;
             WeaponFound = true;
         }
         else if (Item == Items.SawnOffShotgun)
         {
             Weapon = WeaponHash.SawnOffShotgun;
+            Text = Strings.GunSawnOff;
             WeaponFound = true;
         }
         else if (Item == Items.Grenades)
         {
             Weapon = WeaponHash.Grenade;
+            Text = Strings.GunGrenades;
             WeaponFound = true;
         }
         else if (Item == Items.BZ)
         {
             Weapon = WeaponHash.BZGas;
+            Text = Strings.GunBZ;
             WeaponFound = true;
+        }
+        else if (Item == Items.Condom)
+        {
+            Text = Strings.Condom;
+        }
+        else if (Item == Items.Boot)
+        {
+            Text = Strings.Boot;
+        }
+        else if (Item == Items.Fish)
+        {
+            Text = Strings.Fish;
+        }
+        else if (Item == Items.MoldyHamburger)
+        {
+            Text = Strings.MoldyHamburger;
+        }
+        else if (Item == Items.MoldyHotDog)
+        {
+            Text = Strings.MoldyHotdog;
+        }
+        else if (Item == Items.Dildo)
+        {
+            Text = Strings.Dildo;
         }
 
         // Give a weapon or ammo
@@ -217,6 +262,7 @@ public class DumpsterDiving : Script
             Game.Player.Character.Weapons.Current.Ammo += (Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2);
         }
 
-        UI.Notify("You found a " + Item.ToString() + "!");
+        // Notify the user about what has been found on the dumpster
+        UI.Notify(string.Format(Strings.Found, Text));
     }
 }
