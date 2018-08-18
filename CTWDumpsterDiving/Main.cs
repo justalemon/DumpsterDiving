@@ -130,9 +130,11 @@ public class DumpsterDiving : Script
         if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None) && CanSearch)
         {
             Game.FadeScreenOut(1000);
+            Game.Player.Character.FreezePosition = true;
             Wait(1000);
             SearchDumpster();
             Wait(1000);
+            Game.Player.Character.FreezePosition = false;
             Game.FadeScreenIn(1000);
         }
         // In the case of pressing Page Down
