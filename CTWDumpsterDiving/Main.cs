@@ -69,6 +69,12 @@ public class DumpsterDiving : Script
 
     private void OnTick(object Sender, EventArgs Args)
     {
+        // Return if the player is in a vehicle
+        if (Game.Player.Character.CurrentVehicle != null)
+        {
+            return;
+        }
+
         // By default, the user can't search the dumpster if is not near it
         CanSearch = false;
 
