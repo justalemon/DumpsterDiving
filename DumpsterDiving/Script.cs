@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace DumpsterDiving
 {
@@ -49,7 +50,7 @@ namespace DumpsterDiving
         /// <summary>
         /// The configuration for our current script.
         /// </summary>
-        public static Configuration Config = JsonConvert.DeserializeObject<Configuration>("scripts\\DumpsterDiving.json");
+        public static Configuration Config = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText("scripts\\DumpsterDiving.json"));
         /// <summary>
         /// The dumpsters that exist arround the map.
         /// </summary>
