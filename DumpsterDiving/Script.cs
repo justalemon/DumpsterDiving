@@ -1,7 +1,8 @@
-using DumpsterDiving.Properties;
+﻿using DumpsterDiving.Properties;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,11 +12,6 @@ namespace DumpsterDiving
 {
     public class DumpsterDiving : Script
     {
-        /// <summary>
-        /// If the player has a dumpster that can be used.
-        /// This changes every tick.
-        /// </summary>
-        private bool CanSearch = false;
         /// <summary>
         /// The items that the player can get in the dumpsters.
         /// </summary>
@@ -102,50 +98,33 @@ namespace DumpsterDiving
                 NextFetch = Game.GameTime + 1000;
             }
 
-            // By default, the user can't search the dumpster if is not near it
-            CanSearch = false;
-
-            // Iterate over our Dumpster models
-            foreach (Model PropModel in Models)
+            // Iterate over the stored dumpsters
+            foreach (Prop DumpsterProp in Dumpsters)
             {
-                // Iterate over the props for the model
-                foreach (Prop CurrentProp in World.GetAllProps(PropModel))
+                // If the user wants blips and the dumpster doesn't have one
+                if (Config.Blips && DumpsterProp.CurrentBlip == null)
                 {
-                    // Get the distance in units between the player and the Dumpster
-                    float Distance = World.GetDistance(Game.Player.Character.Position, CurrentProp.Position);
-                    // If the player is near and the dumpster is visible, enable the dumpster diving minigame on it
-                    if (CurrentProp.IsVisible && Distance <= Proximity)
-                    {
-                        // Add a blip if the user wants to
-                        if (!CurrentProp.CurrentBlip.Exists() && ScriptConfig.GetValue("CWDD", "Blips", false))
-                        {
-                            Blip PropBlip = CurrentProp.AddBlip();
-                            PropBlip.Name = Strings.Dumpster;
-                            PropBlip.Sprite = BlipSprite.Devin;
-                            PropBlip.Color = BlipColor.Yellow;
-                        }
+                    // Create the blip
+                    DumpsterProp.AddBlip();
+                    DumpsterProp.CurrentBlip.Name = "Dumpster";
+                    DumpsterProp.CurrentBlip.Color = BlipColor.Purple;
+                }
 
-                        // Draw a marker that shows the dumpster position
-                        Vector3 TopMarkerPos = new Vector3(CurrentProp.Position.X, CurrentProp.Position.Y, CurrentProp.Position.Z + 2);
-                        World.DrawMarker(MarkerType.UpsideDownCone, TopMarkerPos, Vector3.Zero, Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f), Color.YellowGreen);
-                        // Draw a marker that will trigger the dumpster diving
-                        Vector3 Front = CurrentProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
+                // Get the position of the front
+                Vector3 Front = DumpsterProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
 
-                        // If the player is near the dumpster, allow it to search
-                        if (Game.Player.Character.Position.DistanceTo(Front) <= 1.5)
-                        {
-                            UI.ShowSubtitle(string.Format(Strings.PressNotification, ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None).ToString()), 1);
-                            CanSearch = true;
-                        }
-                    }
-                    // If the dumpster is far and has a blip attached, remove it
-                    if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
-                    {
-                        #if DEBUG
-                            UI.Notify("Deleting blip: " + CurrentProp.CurrentBlip.GetHashCode().ToString());
-                        #endif
-                        CurrentProp.CurrentBlip.Remove();
-                    }
+                // If the distance is lower or equal to 25 units
+                if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= 25)
+                {
+                    // Draw a marker that will trigger the dumpster diving
+                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(), Color.Purple);
+                }
+
+                // If the distance between the front and the player is lower or equal to 1.5
+                if (World.GetDistance(Game.Player.Character.Position, Front) <= 1.5f)
+                {
+                    // Notify the user
+                    UI.ShowSubtitle("Press [PLACEHOLDER] to loot the dumpster.");
                 }
             }
         }
@@ -153,7 +132,7 @@ namespace DumpsterDiving
         private void OnKeyDown(object Sender, KeyEventArgs Args)
         {
             // If the player preses E and is a dumpster available, "loot it"
-            if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None) && CanSearch)
+            if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None) && true)
             {
                 Game.FadeScreenOut(1000);
                 Game.Player.Character.FreezePosition = true;
