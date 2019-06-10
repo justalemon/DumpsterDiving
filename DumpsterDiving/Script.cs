@@ -42,14 +42,14 @@ namespace DumpsterDiving
         /// A list that contains models of dumpsters.
         /// </summary>
         public static List<Model> Dumpsters = new List<Model>
-    {
-        new Model("prop_dumpster_01a"),
-        new Model("prop_dumpster_02a"),
-        new Model("prop_dumpster_02b"),
-        new Model("prop_dumpster_04a"),
-        new Model("prop_dumpster_4b"),
-        new Model("prop_dumpster_3a")
-    };
+        {
+            new Model("prop_dumpster_01a"),
+            new Model("prop_dumpster_02a"),
+            new Model("prop_dumpster_02b"),
+            new Model("prop_dumpster_04a"),
+            new Model("prop_dumpster_4b"),
+            new Model("prop_dumpster_3a")
+        };
         /// <summary>
         /// The configuration for our current script.
         /// </summary>
@@ -70,7 +70,7 @@ namespace DumpsterDiving
             UI.Notify(Strings.Loaded);
         }
 
-        private void OnTick(object Sender, EventArgs Args)
+        private void OnTick(object sender, EventArgs e)
         {
             // Return if the player is in a vehicle
             if (Game.Player.Character.CurrentVehicle != null)
