@@ -99,19 +99,19 @@ namespace DumpsterDiving
                     DumpsterProp.CurrentBlip.Color = BlipColor.Purple;
                 }
 
+                // Get the position of the front
+                Vector3 Front = DumpsterProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
+
+                // If the distance is lower or equal to 25 units
+                if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= Config.MarkerDistance)
+                {
+                    // Draw a marker that will trigger the dumpster diving
+                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.Purple);
+                }
+
                 // If the player is on foot
                 if (Game.Player.Character.CurrentVehicle == null)
                 {
-                    // Get the position of the front
-                    Vector3 Front = DumpsterProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
-
-                    // If the distance is lower or equal to 25 units
-                    if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= Config.MarkerDistance)
-                    {
-                        // Draw a marker that will trigger the dumpster diving
-                        World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.Purple);
-                    }
-
                     // If the distance between the front and the player is lower or equal to 1.5
                     if (World.GetDistance(Game.Player.Character.Position, Front) <= Config.LootDistance)
                     {
