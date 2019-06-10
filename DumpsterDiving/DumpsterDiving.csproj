@@ -61,9 +61,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DumpsterDiving.ini">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="DumpsterDiving.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

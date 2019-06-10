@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace DumpsterDiving
 {
@@ -49,12 +48,7 @@ namespace DumpsterDiving
         /// <summary>
         /// The configuration for our current script.
         /// </summary>
-        public static ScriptSettings ScriptConfig = ScriptSettings.Load("scripts\\DumpsterDiving.ini");
         public static Configuration Config = JsonConvert.DeserializeObject<Configuration>("scripts\\DumpsterDiving.json");
-        /// <summary>
-        /// Proximity between the player and the dumpster to show a Blip.
-        /// </summary>
-        public static float Proximity = ScriptConfig.GetValue("CWDD", "Proximity", 25f);
         /// <summary>
         /// The dumpsters that exist arround the map.
         /// </summary>
@@ -68,7 +62,6 @@ namespace DumpsterDiving
         {
             // Add our events
             Tick += OnTick;
-            KeyDown += OnKeyDown;
 
             // Just an example message
             // TODO: Print the version and type of build
@@ -114,45 +107,32 @@ namespace DumpsterDiving
                 Vector3 Front = DumpsterProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
 
                 // If the distance is lower or equal to 25 units
-                if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= 25)
+                if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= Config.MarkerDistance)
                 {
                     // Draw a marker that will trigger the dumpster diving
                     World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(), Color.Purple);
                 }
 
                 // If the distance between the front and the player is lower or equal to 1.5
-                if (World.GetDistance(Game.Player.Character.Position, Front) <= 1.5f)
+                if (World.GetDistance(Game.Player.Character.Position, Front) <= Config.LootDistance)
                 {
                     // Notify the user
                     UI.ShowSubtitle("Press [PLACEHOLDER] to loot the dumpster.");
-                }
-            }
-        }
 
-        private void OnKeyDown(object Sender, KeyEventArgs Args)
-        {
-            // If the player preses E and is a dumpster available, "loot it"
-            if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyInteract", Keys.None) && true)
-            {
-                Game.FadeScreenOut(1000);
-                Game.Player.Character.FreezePosition = true;
-                Wait(1000);
-                SearchDumpster();
-                Wait(1000);
-                Game.Player.Character.FreezePosition = false;
-                Game.FadeScreenIn(1000);
-            }
-            // In the case of pressing Page Down
-            if (Args.KeyCode == ScriptConfig.GetValue("CWDD", "KeyBlipRemoval", Keys.None))
-            {
-                // Iterate over the map blips
-                foreach (Blip CurrentBlip in World.GetActiveBlips())
-                {
-                    // If is a D blip
-                    if (CurrentBlip.Sprite == BlipSprite.Devin)
+                    // If the player pressed the interact button
+                    // DEV NOTE: Use GTA.Control.Whistle if Talk doesn't work
+                    if (Game.IsControlJustPressed(0, Control.Talk))
                     {
-                        // Remove it
-                        CurrentBlip.Remove();
+                        // Fade the screen out and freeze the player
+                        Game.FadeScreenOut(Config.Fade);
+                        Game.Player.Character.FreezePosition = true;
+                        // Wait for a seccond and search the dumpster
+                        Wait(1000);
+                        SearchDumpster();
+                        // Wait another seccond to unfreeze and fade out
+                        Wait(1000);
+                        Game.Player.Character.FreezePosition = false;
+                        Game.FadeScreenIn(Config.Fade);
                     }
                 }
             }

@@ -1,3 +1,6 @@
 ﻿{
-    "blips": true
+    "blips": true,
+    "fade": 1000,
+    "markerdistance": 25,
+    "lootdistance": 1.5
 }
