@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTWDumpsterDiving", "CTWDumpsterDiving\CTWDumpsterDiving.csproj", "{845B596A-FEE8-451B-BAAE-0B385B861A0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DumpsterDiving", "DumpsterDiving\DumpsterDiving.csproj", "{845B596A-FEE8-451B-BAAE-0B385B861A0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

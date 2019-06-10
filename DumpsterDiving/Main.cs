@@ -1,4 +1,4 @@
-﻿using CTWDumpsterDiving.Properties;
+﻿using DumpsterDiving.Properties;
 using GTA;
 using GTA.Math;
 using GTA.Native;
