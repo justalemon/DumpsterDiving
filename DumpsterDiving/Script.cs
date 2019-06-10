@@ -72,12 +72,6 @@ namespace DumpsterDiving
 
         private void OnTick(object sender, EventArgs e)
         {
-            // Return if the player is in a vehicle
-            if (Game.Player.Character.CurrentVehicle != null)
-            {
-                return;
-            }
-
             // If the current time is higher or equal than the next fetch time
             if (Game.GameTime >= NextFetch)
             {
@@ -105,36 +99,40 @@ namespace DumpsterDiving
                     DumpsterProp.CurrentBlip.Color = BlipColor.Purple;
                 }
 
-                // Get the position of the front
-                Vector3 Front = DumpsterProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
-
-                // If the distance is lower or equal to 25 units
-                if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= Config.MarkerDistance)
+                // If the player is on foot
+                if (Game.Player.Character.CurrentVehicle == null)
                 {
-                    // Draw a marker that will trigger the dumpster diving
-                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(), Color.Purple);
-                }
+                    // Get the position of the front
+                    Vector3 Front = DumpsterProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
 
-                // If the distance between the front and the player is lower or equal to 1.5
-                if (World.GetDistance(Game.Player.Character.Position, Front) <= Config.LootDistance)
-                {
-                    // Notify the user
-                    UI.ShowSubtitle("Press [PLACEHOLDER] to loot the dumpster.");
-
-                    // If the player pressed the interact button
-                    // DEV NOTE: Use GTA.Control.Whistle if Talk doesn't work
-                    if (Game.IsControlJustPressed(0, Control.Talk))
+                    // If the distance is lower or equal to 25 units
+                    if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= Config.MarkerDistance)
                     {
-                        // Fade the screen out and freeze the player
-                        Game.FadeScreenOut(Config.Fade);
-                        Game.Player.Character.FreezePosition = true;
-                        // Wait for a seccond and search the dumpster
-                        Wait(1000);
-                        SearchDumpster();
-                        // Wait another seccond to unfreeze and fade out
-                        Wait(1000);
-                        Game.Player.Character.FreezePosition = false;
-                        Game.FadeScreenIn(Config.Fade);
+                        // Draw a marker that will trigger the dumpster diving
+                        World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.Purple);
+                    }
+
+                    // If the distance between the front and the player is lower or equal to 1.5
+                    if (World.GetDistance(Game.Player.Character.Position, Front) <= Config.LootDistance)
+                    {
+                        // Notify the user
+                        UI.ShowSubtitle("Press [PLACEHOLDER] to loot the dumpster.");
+
+                        // If the player pressed the interact button
+                        // DEV NOTE: Use GTA.Control.Whistle if Talk doesn't work
+                        if (Game.IsControlJustPressed(0, Control.Talk))
+                        {
+                            // Fade the screen out and freeze the player
+                            Game.FadeScreenOut(Config.Fade);
+                            Game.Player.Character.FreezePosition = true;
+                            // Wait for a seccond and search the dumpster
+                            Wait(1000);
+                            SearchDumpster();
+                            // Wait another seccond to unfreeze and fade out
+                            Wait(1000);
+                            Game.Player.Character.FreezePosition = false;
+                            Game.FadeScreenIn(Config.Fade);
+                        }
                     }
                 }
             }
