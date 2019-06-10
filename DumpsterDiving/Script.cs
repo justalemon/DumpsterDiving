@@ -1,4 +1,4 @@
-﻿using DumpsterDiving.Properties;
+using DumpsterDiving.Properties;
 using GTA;
 using GTA.Math;
 using GTA.Native;
@@ -54,6 +54,7 @@ namespace DumpsterDiving
         /// The configuration for our current script.
         /// </summary>
         public static ScriptSettings ScriptConfig = ScriptSettings.Load("scripts\\DumpsterDiving.ini");
+        public static Configuration Config = JsonConvert.DeserializeObject<Configuration>("scripts\\DumpsterDiving.json");
         /// <summary>
         /// Proximity between the player and the dumpster to show a Blip.
         /// </summary>
