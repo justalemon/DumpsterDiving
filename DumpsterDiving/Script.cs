@@ -41,7 +41,7 @@ namespace DumpsterDiving
         /// <summary>
         /// A list that contains models of dumpsters.
         /// </summary>
-        public static List<Model> Dumpsters = new List<Model>
+        public static List<Model> Models = new List<Model>
         {
             new Model("prop_dumpster_01a"),
             new Model("prop_dumpster_02a"),
@@ -58,6 +58,14 @@ namespace DumpsterDiving
         /// Proximity between the player and the dumpster to show a Blip.
         /// </summary>
         public static float Proximity = ScriptConfig.GetValue("CWDD", "Proximity", 25f);
+        /// <summary>
+        /// The dumpsters that exist arround the map.
+        /// </summary>
+        private static List<Prop> Dumpsters = new List<Prop>();
+        /// <summary>
+        /// Next game time that we should update the lists of peds.
+        /// </summary>
+        private static int NextFetch = 0;
 
         public DumpsterDiving()
         {
@@ -78,11 +86,26 @@ namespace DumpsterDiving
                 return;
             }
 
+            // If the current time is higher or equal than the next fetch time
+            if (Game.GameTime >= NextFetch)
+            {
+                // Reset the list of dumpsters
+                Dumpsters = new List<Prop>();
+                // Iterate over the dumpster models
+                foreach (Model DumpsterModel in Models)
+                {
+                    // Fill the list with all of those props
+                    Dumpsters.AddRange(World.GetAllProps(DumpsterModel));
+                }
+                // Finally, set the next fetch time to one second in the future
+                NextFetch = Game.GameTime + 1000;
+            }
+
             // By default, the user can't search the dumpster if is not near it
             CanSearch = false;
 
             // Iterate over our Dumpster models
-            foreach (Model PropModel in Dumpsters)
+            foreach (Model PropModel in Models)
             {
                 // Iterate over the props for the model
                 foreach (Prop CurrentProp in World.GetAllProps(PropModel))
