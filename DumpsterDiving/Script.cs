@@ -9,30 +9,31 @@ using System.Drawing;
 
 namespace DumpsterDiving
 {
+    /// <summary>
+    /// The items that the player can get in the dumpsters.
+    /// </summary>
+    public enum Items
+    {
+        Hotdog = 0,
+        Hamburger = 1,
+        MoldyHotDog = 2,
+        MoldyHamburger = 3,
+        Money = 4,
+        Dildo = 5,
+        Boot = 6,
+        Fish = 7,
+        Condom = 8,
+        Pistol = 9,
+        MicroSMG = 10,
+        AssaultRifle = 11,
+        Shotgun = 12,
+        SawnOffShotgun = 13,
+        Grenades = 14,
+        BZ = 15
+    }
+
     public class DumpsterDiving : Script
     {
-        /// <summary>
-        /// The items that the player can get in the dumpsters.
-        /// </summary>
-        private enum Items
-        {
-            Hotdog = 0,
-            Hamburger = 1,
-            MoldyHotDog = 2,
-            MoldyHamburger = 3,
-            Money = 4,
-            Dildo = 5,
-            Boot = 6,
-            Fish = 7,
-            Condom = 8,
-            Pistol = 9,
-            MicroSMG = 10,
-            AssaultRifle = 11,
-            Shotgun = 12,
-            SawnOffShotgun = 13,
-            Grenades = 14,
-            BZ = 15
-        }
         /// <summary>
         /// A list that contains models of dumpsters.
         /// </summary>
