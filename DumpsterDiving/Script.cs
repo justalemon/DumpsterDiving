@@ -87,12 +87,13 @@ namespace DumpsterDiving
             foreach (Prop DumpsterProp in Dumpsters)
             {
                 // If the user wants blips and the dumpster doesn't have one
-                if (Config.Blips && DumpsterProp.CurrentBlip == null)
+                if (Config.Blips && !DumpsterProp.CurrentBlip.Exists())
                 {
                     // Create the blip
-                    DumpsterProp.AddBlip();
-                    DumpsterProp.CurrentBlip.Name = "Dumpster";
-                    DumpsterProp.CurrentBlip.Color = BlipColor.Purple;
+                    Blip Current = DumpsterProp.AddBlip();
+                    // And set the properties of it
+                    Current.Name = "Dumpster";
+                    Current.Color = BlipColor.RedLight;
                 }
 
                 // Get the position of the front
@@ -102,7 +103,7 @@ namespace DumpsterDiving
                 if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= Config.MarkerDistance)
                 {
                     // Draw a marker that will trigger the dumpster diving
-                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.Purple);
+                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.IndianRed);
                 }
 
                 // If the player is on foot
