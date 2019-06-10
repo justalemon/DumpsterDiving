@@ -64,10 +64,6 @@ namespace DumpsterDiving
         {
             // Add our events
             Tick += OnTick;
-
-            // Just an example message
-            // TODO: Print the version and type of build
-            UI.Notify(Strings.Loaded);
         }
 
         private void OnTick(object sender, EventArgs e)
