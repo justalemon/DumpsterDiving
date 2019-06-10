@@ -117,10 +117,9 @@ namespace DumpsterDiving
                     // If the dumpster is far and has a blip attached, remove it
                     if (Distance > 25f && CurrentProp.CurrentBlip.Exists())
                     {
-                        if (ScriptConfig.GetValue("CWDD", "Debug", false))
-                        {
+                        #if DEBUG
                             UI.Notify("Deleting blip: " + CurrentProp.CurrentBlip.GetHashCode().ToString());
-                        }
+                        #endif
                         CurrentProp.CurrentBlip.Remove();
                     }
                 }
