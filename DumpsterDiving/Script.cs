@@ -2,6 +2,7 @@
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using NAudio.Wave;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,18 @@ namespace DumpsterDiving
     public class DumpsterDiving : Script
     {
         /// <summary>
+        /// The audio output device.
+        /// </summary>
+        public WaveOutEvent Output = new WaveOutEvent();
+        /// <summary>
+        /// The audio file that we are going to hear.
+        /// </summary>
+        private AudioFileReader AudioFile = new AudioFileReader("scripts\\DumpsterDiving\\Search.mp3");
+        /// <summary>
+        /// If the game information should be updated after the playback.
+        /// </summary>
+        private bool UpdateRequired = false;
+        /// <summary>
         /// A list that contains models of dumpsters.
         /// </summary>
         public static List<Model> Models = new List<Model>
@@ -64,6 +77,7 @@ namespace DumpsterDiving
         {
             // Add our events
             Tick += OnTick;
+            Output.PlaybackStopped += OnPlaybackStopped;
         }
 
         private void OnTick(object sender, EventArgs e)
@@ -81,6 +95,17 @@ namespace DumpsterDiving
                 }
                 // Finally, set the next fetch time to one second in the future
                 NextFetch = Game.GameTime + 1000;
+            }
+
+            // If we need to update the playback
+            if (UpdateRequired)
+            {
+                // Disable the update
+                UpdateRequired = false;
+                // Fade in
+                Game.FadeScreenIn(Config.Fade);
+                // And unfreeze the player
+                Game.Player.Character.FreezePosition = false;
             }
 
             // Iterate over the stored dumpsters
@@ -122,17 +147,34 @@ namespace DumpsterDiving
                             // Fade the screen out and freeze the player
                             Game.FadeScreenOut(Config.Fade);
                             Game.Player.Character.FreezePosition = true;
-                            // Wait for a seccond and search the dumpster
+                            // Wait for a seccond
                             Wait(1000);
+                            // If the current time of the audio is the same as the total time
+                            if (AudioFile.CurrentTime == AudioFile.TotalTime)
+                            {
+                                // Stop the playback and reset the playtime
+                                Output.Stop();
+                                AudioFile.CurrentTime = TimeSpan.Zero;
+                            }
+                            // Otherwise
+                            else
+                            {
+                                // Initialize the audio
+                                Output.Init(AudioFile);
+                            }
+                            // Play the audio and search the dumpster
+                            Output.Play();
                             SearchDumpster();
-                            // Wait another seccond to unfreeze and fade out
-                            Wait(1000);
-                            Game.Player.Character.FreezePosition = false;
-                            Game.FadeScreenIn(Config.Fade);
                         }
                     }
                 }
             }
+        }
+
+        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            // Make the tick update the playback
+            UpdateRequired = true;
         }
 
         private void SearchDumpster()
