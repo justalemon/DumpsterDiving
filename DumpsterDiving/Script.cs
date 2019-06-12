@@ -186,8 +186,6 @@ namespace DumpsterDiving
         {
             // Get a random item from the enum at the top
             Items Item = (Items)Generator.Next(0, Enum.GetValues(typeof(Items)).Length);
-            // Generate some money if we need it
-            int Money = Generator.Next(10, 100);
 
             // See what the user got
             switch (Item)
@@ -197,7 +195,7 @@ namespace DumpsterDiving
                     Game.Player.Character.Health = Game.Player.Character.MaxHealth;
                     break;
                 case Items.Money:
-                    Game.Player.Money += Money;
+                    Game.Player.Money += 10;
                     break;
                 case Items.Pistol:
                     Weapon(WeaponHash.Pistol);
@@ -225,18 +223,8 @@ namespace DumpsterDiving
                     break;
             }
 
-            // If the player picked up money
-            if (Item == Items.Money)
-            {
-                // Format the item
-                UI.Notify(string.Format(Resources.ResourceManager.GetString($"Found{Item}"), Money));
-            }
-            // Otherwise
-            else
-            {
-                // Show the string as-is
-                UI.Notify(Resources.ResourceManager.GetString($"Found{Item}"));
-            }
+            // Finally notify the user
+            UI.Notify(Resources.ResourceManager.GetString($"Found{Item}"));
         }
 
         private static void Weapon(WeaponHash Weapon)

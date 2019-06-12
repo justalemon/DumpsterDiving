@@ -154,7 +154,7 @@
     <value>You have found a ~r~Moldy Hot Dog~s~!</value>
   </data>
   <data name="FoundMoney" xml:space="preserve">
-    <value>You have found ~g~${0}~s~!</value>
+    <value>You have found ~g~$10~s~!</value>
   </data>
   <data name="FoundPistol" xml:space="preserve">
     <value>You have found a ~g~Pistol~s~!</value>
