@@ -1,4 +1,4 @@
-using DumpsterDiving.Properties;
+﻿using DumpsterDiving.Properties;
 using GTA;
 using GTA.Math;
 using GTA.Native;
@@ -32,6 +32,7 @@ namespace DumpsterDiving
         SawnOffShotgun = 13,
         Grenades = 14,
         BZGas = 15,
+        TearGas = 16
     }
 
     public class DumpsterDiving : Script
@@ -218,6 +219,9 @@ namespace DumpsterDiving
                     break;
                 case Items.BZGas:
                     Weapon(WeaponHash.BZGas);
+                    break;
+                case Items.TearGas:
+                    Weapon(WeaponHash.SmokeGrenade);
                     break;
             }
 
