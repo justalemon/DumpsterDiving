@@ -6,6 +6,8 @@ namespace DumpsterDiving
     {
         [JsonProperty("blips")]
         public bool Blips { get; set; }
+        [JsonProperty("sound")]
+        public bool Sound { get; set; }
         [JsonProperty("fade")]
         public int Fade { get; set; }
         [JsonProperty("markerdistance")]

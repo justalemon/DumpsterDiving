@@ -167,8 +167,21 @@ namespace DumpsterDiving
                                 // Initialize the audio
                                 Output.Init(AudioFile);
                             }
-                            // Play the audio and search the dumpster
-                            Output.Play();
+
+                            // If the user wants the sound
+                            if (Config.Sound)
+                            {
+                                // Play it
+                                Output.Play();
+                            }
+                            // Otherwise
+                            else
+                            {
+                                // Mark an update as required and wait for the next tick
+                                UpdateRequired = true;
+                            }
+
+                            // Finally, search the dumpster
                             SearchDumpster();
                         }
                     }
