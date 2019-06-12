@@ -16,7 +16,7 @@ namespace DumpsterDiving
     /// </summary>
     public enum Items
     {
-        Hotdog = 0,
+        HotDog = 0,
         Hamburger = 1,
         MoldyHotDog = 2,
         MoldyHamburger = 3,
@@ -31,7 +31,7 @@ namespace DumpsterDiving
         Shotgun = 12,
         SawnOffShotgun = 13,
         Grenades = 14,
-        BZ = 15
+        BZGas = 15,
     }
 
     public class DumpsterDiving : Script
@@ -183,80 +183,56 @@ namespace DumpsterDiving
 
         private void SearchDumpster()
         {
-            // Temporary variables to know if the player has found a weapon
-            string Text = string.Empty;
-
             // Get a random item from the enum at the top
-            Random Generator = new Random();
-            int Number = Generator.Next(0, Enum.GetValues(typeof(Items)).Length);
-            Items Item = (Items)Number;
+            Items Item = (Items)Generator.Next(0, Enum.GetValues(typeof(Items)).Length);
+            // Generate some money if we need it
+            int Money = Generator.Next(10, 100);
 
             // See what the user got
             switch (Item)
             {
-                case Items.Hotdog:
-                    Text = Strings.Hotdog;
-                    Heal();
-                    break;
+                case Items.HotDog:
                 case Items.Hamburger:
-                    Text = Strings.Hamburger;
                     Heal();
-                    break;
-                case Items.MoldyHotDog:
-                    Text = Strings.MoldyHotdog;
-                    break;
-                case Items.MoldyHamburger:
-                    Text = Strings.MoldyHamburger;
                     break;
                 case Items.Money:
-                    int Money = Generator.Next(10, 100);
-                    Text = string.Format(Strings.Hamburger, Money);
                     Game.Player.Money += Money;
                     break;
-                case Items.Dildo:
-                    Text = Strings.Dildo;
-                    break;
-                case Items.Boot:
-                    Text = Strings.Boot;
-                    break;
-                case Items.Fish:
-                    Text = Strings.Fish;
-                    break;
-                case Items.Condom:
-                    Text = Strings.Condom;
-                    break;
                 case Items.Pistol:
-                    Text = Strings.GunPistol;
                     Weapon(WeaponHash.Pistol);
                     break;
                 case Items.MicroSMG:
-                    Text = Strings.GunMicro;
                     Weapon(WeaponHash.MicroSMG);
                     break;
                 case Items.AssaultRifle:
-                    Text = Strings.GunAssaultRifle;
                     Weapon(WeaponHash.AssaultRifle);
                     break;
                 case Items.Shotgun:
-                    Text = Strings.GunShotgun;
                     Weapon(WeaponHash.PumpShotgun);
                     break;
                 case Items.SawnOffShotgun:
-                    Text = Strings.GunSawnOff;
                     Weapon(WeaponHash.SawnOffShotgun);
                     break;
                 case Items.Grenades:
-                    Text = Strings.GunGrenades;
                     Weapon(WeaponHash.Grenade);
                     break;
-                case Items.BZ:
-                    Text = Strings.GunBZ;
+                case Items.BZGas:
                     Weapon(WeaponHash.BZGas);
                     break;
             }
 
-            // Notify the user about what has been found on the dumpster
-            UI.Notify(string.Format(Strings.Found, Text));
+            // If the player picked up money
+            if (Item == Items.Money)
+            {
+                // Format the item
+                UI.Notify(string.Format(Resources.ResourceManager.GetString($"Found{Item}"), Money));
+            }
+            // Otherwise
+            else
+            {
+                // Show the string as-is
+                UI.Notify(Resources.ResourceManager.GetString($"Found{Item}"));
+            }
         }
 
         private static void Heal()

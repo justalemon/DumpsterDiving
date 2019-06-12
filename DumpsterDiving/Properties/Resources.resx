@@ -117,64 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Boot" xml:space="preserve">
-    <value>a boot</value>
+  <data name="FoundAssaultRifle" xml:space="preserve">
+    <value>You have found an ~g~Assault Rifle~s~!</value>
   </data>
-  <data name="Condom" xml:space="preserve">
-    <value>a used condom</value>
+  <data name="FoundBoot" xml:space="preserve">
+    <value>You have found a ~r~Boot~s~!</value>
   </data>
-  <data name="Dildo" xml:space="preserve">
-    <value>a dildo</value>
+  <data name="FoundBZGas" xml:space="preserve">
+    <value>You have found some ~g~BZ Gas~s~!</value>
   </data>
-  <data name="Dumpster" xml:space="preserve">
-    <value>Dumpster</value>
+  <data name="FoundCondom" xml:space="preserve">
+    <value>You have found a ~r~Used Condom~s~!</value>
   </data>
-  <data name="Fish" xml:space="preserve">
-    <value>a fish</value>
+  <data name="FoundDildo" xml:space="preserve">
+    <value>You have found a ~r~Dildo~s~!</value>
   </data>
-  <data name="Found" xml:space="preserve">
-    <value>You have found {0}!</value>
+  <data name="FoundFish" xml:space="preserve">
+    <value>You have found a ~r~Fish~s~!</value>
   </data>
-  <data name="GunAssaultRifle" xml:space="preserve">
-    <value>an Assault Rifle</value>
+  <data name="FoundGrenades" xml:space="preserve">
+    <value>You have found some ~g~Frag Grenades~s~!</value>
   </data>
-  <data name="GunBZ" xml:space="preserve">
-    <value>some BZ gas</value>
+  <data name="FoundHamburger" xml:space="preserve">
+    <value>You have found a ~g~Hamburger~s~!</value>
   </data>
-  <data name="GunGrenades" xml:space="preserve">
-    <value>some Grenades</value>
+  <data name="FoundHotDog" xml:space="preserve">
+    <value>You have found a ~g~Hot Dog~s~!</value>
   </data>
-  <data name="GunMicro" xml:space="preserve">
-    <value>a Micro SMG</value>
+  <data name="FoundMicroSMG" xml:space="preserve">
+    <value>You have found a ~g~Micro SMG~s~!</value>
   </data>
-  <data name="GunPistol" xml:space="preserve">
-    <value>a Pistol</value>
+  <data name="FoundMoldyHamburger" xml:space="preserve">
+    <value>You have found a ~r~Moldy Hamburger~s~!</value>
   </data>
-  <data name="GunSawnOff" xml:space="preserve">
-    <value>a Sawn-off Shotgun</value>
+  <data name="FoundMoldyHotDog" xml:space="preserve">
+    <value>You have found a ~r~Moldy Hot Dog~s~!</value>
   </data>
-  <data name="GunShotgun" xml:space="preserve">
-    <value>a Shotgun</value>
+  <data name="FoundMoney" xml:space="preserve">
+    <value>You have found ~g~${0}~s~!</value>
   </data>
-  <data name="Hamburger" xml:space="preserve">
-    <value>a Hamburger</value>
+  <data name="FoundPistol" xml:space="preserve">
+    <value>You have found a ~g~Pistol~s~!</value>
   </data>
-  <data name="Hotdog" xml:space="preserve">
-    <value>a Hotdog</value>
+  <data name="FoundSawnOffShotgun" xml:space="preserve">
+    <value>You have found a ~g~Sawn Off Shotgun~s~!</value>
   </data>
-  <data name="Loaded" xml:space="preserve">
-    <value>DumpsterDiving has been loaded!</value>
+  <data name="FoundShotgun" xml:space="preserve">
+    <value>You have found a ~g~Shotgun~s~!</value>
   </data>
-  <data name="MoldyHamburger" xml:space="preserve">
-    <value>a Moldy Hamburger</value>
-  </data>
-  <data name="MoldyHotdog" xml:space="preserve">
-    <value>a Moldy Hotdog</value>
-  </data>
-  <data name="Money" xml:space="preserve">
-    <value>{0} dollars</value>
-  </data>
-  <data name="PressNotification" xml:space="preserve">
-    <value>Press {0} to search the dumpster</value>
+  <data name="FoundTearGas" xml:space="preserve">
+    <value>You have found some ~g~Tear Gas~s~!</value>
   </data>
 </root>
