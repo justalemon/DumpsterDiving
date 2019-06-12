@@ -1,4 +1,4 @@
-﻿using DumpsterDiving.Properties;
+using DumpsterDiving.Properties;
 using GTA;
 using GTA.Math;
 using GTA.Native;
@@ -44,6 +44,10 @@ namespace DumpsterDiving
         /// The audio file that we are going to hear.
         /// </summary>
         private AudioFileReader AudioFile = new AudioFileReader("scripts\\DumpsterDiving\\Search.mp3");
+        /// <summary>
+        /// Our random number generator.
+        /// </summary>
+        private Random Generator = new Random();
         /// <summary>
         /// If the game information should be updated after the playback.
         /// </summary>
