@@ -194,7 +194,7 @@ namespace DumpsterDiving
             {
                 case Items.HotDog:
                 case Items.Hamburger:
-                    Heal();
+                    Game.Player.Character.Health = Game.Player.Character.MaxHealth;
                     break;
                 case Items.Money:
                     Game.Player.Money += Money;
@@ -237,12 +237,6 @@ namespace DumpsterDiving
                 // Show the string as-is
                 UI.Notify(Resources.ResourceManager.GetString($"Found{Item}"));
             }
-        }
-
-        private static void Heal()
-        {
-            int MaxHealth = Function.Call<int>(Hash.GET_ENTITY_MAX_HEALTH, Game.Player.Character);
-            Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, MaxHealth);
         }
 
         private static void Weapon(WeaponHash Weapon)
