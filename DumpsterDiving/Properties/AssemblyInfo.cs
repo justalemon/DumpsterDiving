@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Dumpster Diving from GTA: Chinatown Wars in Grand Theft Auto V")]
 [assembly: AssemblyCompany("justalemon")]
 [assembly: AssemblyProduct("DumpsterDiving")]
-[assembly: AssemblyCopyright("© 2018-2019 Hannele 'Lemon' Ruiz & Starman")]
+[assembly: AssemblyCopyright("© 2018-2019 Hannele Ruiz & Starman")]
 
 [assembly: ComVisible(false)]
 [assembly: Guid("845b596a-fee8-451b-baae-0b385b861a0d")]
