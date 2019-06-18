@@ -208,7 +208,7 @@ namespace DumpsterDiving
                     Game.Player.Character.Health = Game.Player.Character.MaxHealth;
                     break;
                 case Items.Money:
-                    Game.Player.Money += 10;
+                    Game.Player.Money += Generator.Next(Config.MoneyMinimum, Config.MoneyMaximum + 1);
                     break;
                 case Items.Pistol:
                     Weapon(WeaponHash.Pistol);

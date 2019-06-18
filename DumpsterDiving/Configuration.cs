@@ -29,5 +29,15 @@ namespace DumpsterDiving
         /// </summary>
         [JsonProperty("lootdistance")]
         public float LootDistance { get; set; }
+        /// <summary>
+        /// The minimum amount of money that the player can get from the dumpster.
+        /// </summary>
+        [JsonProperty("moneymin")]
+        public int MoneyMinimum { get; set; }
+        /// <summary>
+        /// The maximum amount of money that the player can get from the dumpster.
+        /// </summary>
+        [JsonProperty("moneymax")]
+        public int MoneyMaximum { get; set; }
     }
 }
