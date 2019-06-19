@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using GTA;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.Drawing;
 
 namespace DumpsterDiving
@@ -22,5 +24,8 @@ namespace DumpsterDiving
         [JsonConverter(typeof(Citron.ColorConverter))]
         [JsonProperty("markercolor")]
         public Color MarkerColor { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("blipcolor")]
+        public BlipColor BlipColor { get; set; }
     }
 }

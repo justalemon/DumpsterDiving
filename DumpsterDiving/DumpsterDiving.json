@@ -6,5 +6,6 @@
     "lootdistance": 1.5,
     "moneymin": 10,
     "moneymax": 10,
-    "markercolor": "IndianRed"
+    "markercolor": "IndianRed",
+    "blipcolor": "RedLight"
 }

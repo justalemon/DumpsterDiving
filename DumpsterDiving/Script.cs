@@ -135,7 +135,7 @@ namespace DumpsterDiving
                     Blip Current = DumpsterProp.AddBlip();
                     // And set the properties of it
                     Current.Name = "Dumpster";
-                    Current.Color = BlipColor.RedLight;
+                    Current.Color = Config.BlipColor;
                 }
 
                 // Get the position of the front
