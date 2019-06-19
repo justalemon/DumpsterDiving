@@ -41,7 +41,7 @@ namespace DumpsterDiving
         /// <summary>
         /// The audio output device.
         /// </summary>
-        public WaveOutEvent Output = new WaveOutEvent();
+        private WaveOutEvent Output = new WaveOutEvent();
         /// <summary>
         /// The audio file that we are going to hear.
         /// </summary>
@@ -57,7 +57,7 @@ namespace DumpsterDiving
         /// <summary>
         /// A list that contains models of dumpsters.
         /// </summary>
-        public static List<Model> Models = new List<Model>
+        private readonly List<Model> Models = new List<Model>
         {
             new Model("prop_dumpster_01a"),
             new Model("prop_dumpster_02a"),
@@ -69,23 +69,23 @@ namespace DumpsterDiving
         /// <summary>
         /// The configuration for our current script.
         /// </summary>
-        public static Configuration Config = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText("scripts\\DumpsterDiving.json"));
+        private Configuration Config = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText("scripts\\DumpsterDiving.json"));
         /// <summary>
         /// The dumpsters that exist arround the map.
         /// </summary>
-        private static List<Prop> Dumpsters = new List<Prop>();
+        private List<Prop> Dumpsters = new List<Prop>();
         /// <summary>
         /// Next game time that we should update the lists of peds.
         /// </summary>
-        private static int NextFetch = 0;
+        private int NextFetch = 0;
         /// <summary>
         /// If the player has been notified about how to do the dumpster diving.
         /// </summary>
-        private static bool Notified = false;
+        private bool Notified = false;
         /// <summary>
         /// If a dumpster has been found.
         /// </summary>
-        private static bool Found = false;
+        private bool Found = false;
 
         public DumpsterDiving()
         {
