@@ -1,4 +1,5 @@
-﻿using DumpsterDiving.Properties;
+﻿using Citron;
+using DumpsterDiving.Properties;
 using GTA;
 using GTA.Math;
 using GTA.Native;
@@ -77,6 +78,14 @@ namespace DumpsterDiving
         /// Next game time that we should update the lists of peds.
         /// </summary>
         private static int NextFetch = 0;
+        /// <summary>
+        /// If the player has been notified about how to do the dumpster diving.
+        /// </summary>
+        private static bool Notified = false;
+        /// <summary>
+        /// If a dumpster has been found.
+        /// </summary>
+        private static bool Found = false;
 
         public DumpsterDiving()
         {
@@ -87,6 +96,9 @@ namespace DumpsterDiving
 
         private void OnTick(object sender, EventArgs e)
         {
+            // Set found to false
+            Found = false;
+
             // If the current time is higher or equal than the next fetch time
             if (Game.GameTime >= NextFetch)
             {
@@ -142,8 +154,17 @@ namespace DumpsterDiving
                     // If the distance between the front and the player is lower or equal to 1.5
                     if (World.GetDistance(Game.Player.Character.Position, Front) <= Config.LootDistance)
                     {
-                        // Notify the user
-                        UI.ShowSubtitle("Press [PLACEHOLDER] to loot the dumpster.");
+                        // If the user has not been notified
+                        if (!Notified)
+                        {
+                            // Show the user
+                            Screen.ShowHelp("Press ~INPUT_PICKUP~ to loot the dumpster.", 2000);
+                            // And set the flag to true
+                            Notified = true;
+                        }
+
+                        // Set the found variable to true
+                        Found = true;
 
                         // If the player pressed the interact button
                         // DEV NOTE: Use GTA.Control.Whistle if Talk doesn't work
@@ -186,6 +207,13 @@ namespace DumpsterDiving
                         }
                     }
                 }
+            }
+
+            // If there was no dumpster found and the user was notified
+            if (!Found && Notified)
+            {
+                // A notification is required in the next tick
+                Notified = false;
             }
         }
 
