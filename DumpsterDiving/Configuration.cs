@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Drawing;
 
 namespace DumpsterDiving
 {
@@ -18,5 +19,8 @@ namespace DumpsterDiving
         public int MoneyMinimum { get; set; }
         [JsonProperty("moneymax")]
         public int MoneyMaximum { get; set; }
+        [JsonConverter(typeof(Citron.ColorConverter))]
+        [JsonProperty("markercolor")]
+        public Color MarkerColor { get; set; }
     }
 }

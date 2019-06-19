@@ -145,7 +145,7 @@ namespace DumpsterDiving
                 if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= Config.MarkerDistance)
                 {
                     // Draw a marker that will trigger the dumpster diving
-                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Color.IndianRed);
+                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Config.MarkerColor);
                 }
 
                 // If the player is on foot

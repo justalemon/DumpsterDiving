@@ -53,6 +53,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Compile Include="..\Citron\Extensions\Ped.cs" />
+    <Compile Include="..\Citron\ColorConverter.cs" />
     <Compile Include="..\Citron\PlayerData.cs" />
     <Compile Include="..\Citron\Screen.cs" />
     <Compile Include="Configuration.cs" />
