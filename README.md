@@ -7,8 +7,8 @@
 <a href="https://www.codefactor.io/repository/github/justalemon/dumpsterdiving"><img src="https://www.codefactor.io/repository/github/justalemon/dumpsterdiving/badge"></a>
 <a href="https://dependabot.com"><img src="https://api.dependabot.com/badges/status?host=github&repo=justalemon/DumpsterDiving"></a>
 <a href="https://discord.gg/Cf6sspj"><img src="https://img.shields.io/badge/discord-join-7289DA.svg"></a>
-<br><br>
+<br>
 DumpsterDiving is a mod for Grand Theft Auto V that implements the Dumpster Diving/Looting from Grand Theft Auto: Chinatown Wars.
-<br><br>
+<br>
 <img src="https://raw.githubusercontent.com/justalemon/DumpsterDiving/master/docs/preview.png"/>
 </div>
