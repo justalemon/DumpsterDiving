@@ -169,7 +169,7 @@ namespace DumpsterDiving.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have found ~g~$10~s~!.
+        ///   Looks up a localized string similar to You have found ~g~${0}~s~!.
         /// </summary>
         public static string FoundMoney {
             get {
