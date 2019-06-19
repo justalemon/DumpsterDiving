@@ -52,7 +52,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Compile Include="Citron\AutoUpdater\AutoUpdater.cs" />
     <Compile Include="Citron\Extensions\Ped.cs" />
     <Compile Include="Citron\PlayerData.cs" />
     <Compile Include="Citron\Screen.cs" />
