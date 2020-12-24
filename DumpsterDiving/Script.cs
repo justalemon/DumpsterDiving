@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace DumpsterDiving
 {
@@ -42,13 +43,17 @@ namespace DumpsterDiving
         #region Fields
 
         /// <summary>
+        /// The location of the game script.
+        /// </summary>
+        private static readonly string location = new Uri(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
+        /// <summary>
         /// The audio output device.
         /// </summary>
         private readonly WaveOutEvent output = new WaveOutEvent();
         /// <summary>
         /// The audio file that we are going to hear.
         /// </summary>
-        private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(Paths.GetCallingPath(), "DumpsterDiving", "Search.mp3"));
+        private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
         /// <summary>
         /// Our random number generator.
         /// </summary>
@@ -72,7 +77,7 @@ namespace DumpsterDiving
         /// <summary>
         /// The configuration for our current script.
         /// </summary>
-        private readonly Configuration config = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(Path.Combine(Paths.GetCallingPath(), "DumpsterDiving.json")));
+        private Configuration config = new Configuration();
         /// <summary>
         /// The dumpsters that exist arround the map.
         /// </summary>
@@ -99,6 +104,20 @@ namespace DumpsterDiving
         /// </summary>
         public DumpsterDiving()
         {
+            // If the configuration file exists, load it
+            // If not, create a new one
+            string path = Path.Combine(location, "DumpsterDiving", "Config.json");
+            if (File.Exists(path))
+            {
+                string contents = File.ReadAllText(path);
+                config = JsonConvert.DeserializeObject<Configuration>(contents);
+            }
+            else
+            {
+                File.WriteAllText(path, JsonConvert.SerializeObject(config));
+            }
+
+            // Then just add the events
             Tick += OnTick;
             output.PlaybackStopped += OnPlaybackStopped;
         }
