@@ -1,5 +1,4 @@
-﻿using DumpsterDiving.Properties;
-using GTA;
+﻿using GTA;
 using GTA.Math;
 using GTA.UI;
 using NAudio.Wave;
@@ -306,13 +305,13 @@ namespace DumpsterDiving
             if (Item == Items.Money)
             {
                 // Format the item
-                Notification.Show(string.Format(Resources.ResourceManager.GetString($"Found{Item}"), Money));
+                //Notification.Show(string.Format(Resources.ResourceManager.GetString($"Found{Item}"), Money));
             }
             // Otherwise
             else
             {
                 // Notify the player with the string as-is
-                Notification.Show(Resources.ResourceManager.GetString($"Found{Item}"));
+                //Notification.Show(Resources.ResourceManager.GetString($"Found{Item}"));
             }
         }
 
