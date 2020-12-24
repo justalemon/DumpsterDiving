@@ -1,13 +1,11 @@
-﻿using Citron;
-using DumpsterDiving.Properties;
+﻿using DumpsterDiving.Properties;
 using GTA;
 using GTA.Math;
-using GTA.Native;
+using GTA.UI;
 using NAudio.Wave;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 
 namespace DumpsterDiving
@@ -36,28 +34,33 @@ namespace DumpsterDiving
         TearGas = 16
     }
 
+    /// <summary>
+    /// Script that allows you to perform dumpster diving
+    /// </summary>
     public class DumpsterDiving : Script
     {
+        #region Fields
+
         /// <summary>
         /// The audio output device.
         /// </summary>
-        private WaveOutEvent Output = new WaveOutEvent();
+        private readonly WaveOutEvent output = new WaveOutEvent();
         /// <summary>
         /// The audio file that we are going to hear.
         /// </summary>
-        private AudioFileReader AudioFile = new AudioFileReader("scripts\\DumpsterDiving\\Search.mp3");
+        private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(Paths.GetCallingPath(), "DumpsterDiving", "Search.mp3"));
         /// <summary>
         /// Our random number generator.
         /// </summary>
-        private Random Generator = new Random();
+        private readonly Random generator = new Random();
         /// <summary>
         /// If the game information should be updated after the playback.
         /// </summary>
-        private bool UpdateRequired = false;
+        private bool updateRequired = false;
         /// <summary>
         /// A list that contains models of dumpsters.
         /// </summary>
-        private readonly List<Model> Models = new List<Model>
+        private readonly List<Model> dumpsterModels = new List<Model>
         {
             new Model("prop_dumpster_01a"),
             new Model("prop_dumpster_02a"),
@@ -69,137 +72,147 @@ namespace DumpsterDiving
         /// <summary>
         /// The configuration for our current script.
         /// </summary>
-        private Configuration Config = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText("scripts\\DumpsterDiving.json"));
+        private readonly Configuration config = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(Path.Combine(Paths.GetCallingPath(), "DumpsterDiving.json")));
         /// <summary>
         /// The dumpsters that exist arround the map.
         /// </summary>
-        private List<Prop> Dumpsters = new List<Prop>();
+        private List<Prop> nearbyDumpsters = new List<Prop>();
         /// <summary>
         /// Next game time that we should update the lists of peds.
         /// </summary>
-        private int NextFetch = 0;
+        private int nextFetch = 0;
         /// <summary>
         /// If the player has been notified about how to do the dumpster diving.
         /// </summary>
-        private bool Notified = false;
+        private bool notified = false;
         /// <summary>
         /// If a dumpster has been found.
         /// </summary>
-        private bool Found = false;
+        private bool found = false;
 
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Creates a new Dumpster Diving script.
+        /// </summary>
         public DumpsterDiving()
         {
-            // Add our events
             Tick += OnTick;
-            Output.PlaybackStopped += OnPlaybackStopped;
+            output.PlaybackStopped += OnPlaybackStopped;
         }
+
+        #endregion
+
+        #region Events
 
         private void OnTick(object sender, EventArgs e)
         {
             // Set found to false
-            Found = false;
+            found = false;
 
             // If the current time is higher or equal than the next fetch time
-            if (Game.GameTime >= NextFetch)
+            if (Game.GameTime >= nextFetch)
             {
                 // Reset the list of dumpsters
-                Dumpsters = new List<Prop>();
+                nearbyDumpsters = new List<Prop>();
                 // Iterate over the dumpster models
-                foreach (Model DumpsterModel in Models)
+                foreach (Model DumpsterModel in dumpsterModels)
                 {
                     // Fill the list with all of those props
-                    Dumpsters.AddRange(World.GetAllProps(DumpsterModel));
+                    nearbyDumpsters.AddRange(World.GetAllProps(DumpsterModel));
                 }
                 // Finally, set the next fetch time to one second in the future
-                NextFetch = Game.GameTime + 1000;
+                nextFetch = Game.GameTime + 1000;
             }
 
             // If we need to update the playback
-            if (UpdateRequired)
+            if (updateRequired)
             {
                 // Disable the update
-                UpdateRequired = false;
+                updateRequired = false;
                 // Fade in
-                Game.FadeScreenIn(Config.Fade);
+                Screen.FadeIn(config.Fade);
                 // And unfreeze the player
-                Game.Player.Character.FreezePosition = false;
+                Game.Player.Character.IsPositionFrozen = false;
             }
 
             // Iterate over the stored dumpsters
-            foreach (Prop DumpsterProp in Dumpsters)
+            foreach (Prop DumpsterProp in nearbyDumpsters)
             {
                 // If the user wants blips and the dumpster doesn't have one
-                if (Config.Blips && !DumpsterProp.CurrentBlip.Exists())
+                if (config.Blips && !DumpsterProp.AttachedBlip.Exists())
                 {
                     // Create the blip
                     Blip Current = DumpsterProp.AddBlip();
                     // And set the properties of it
                     Current.Name = "Dumpster";
-                    Current.Color = Config.BlipColor;
+                    Current.Color = config.BlipColor;
                 }
 
                 // Get the position of the front
-                Vector3 Front = DumpsterProp.GetOffsetInWorldCoords(new Vector3(0, -1f, 0));
+                Vector3 Front = DumpsterProp.GetOffsetPosition(new Vector3(0, -1f, 0));
 
                 // If the distance is lower or equal to 25 units
-                if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= Config.MarkerDistance)
+                if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= config.MarkerDistance)
                 {
                     // Draw a marker that will trigger the dumpster diving
-                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), Config.MarkerColor);
+                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), config.MarkerColor);
                 }
 
                 // If the player is on foot
                 if (Game.Player.Character.CurrentVehicle == null)
                 {
                     // If the distance between the front and the player is lower or equal to 1.5
-                    if (World.GetDistance(Game.Player.Character.Position, Front) <= Config.LootDistance)
+                    if (World.GetDistance(Game.Player.Character.Position, Front) <= config.LootDistance)
                     {
                         // If the user has not been notified
-                        if (!Notified)
+                        if (!notified)
                         {
                             // Show the user
-                            Screen.ShowHelp("Press ~INPUT_PICKUP~ to loot the dumpster.", 2000);
+                            Screen.ShowHelpTextThisFrame("Press ~INPUT_PICKUP~ to loot the dumpster.");
                             // And set the flag to true
-                            Notified = true;
+                            notified = true;
                         }
 
                         // Set the found variable to true
-                        Found = true;
+                        found = true;
 
                         // If the player pressed the interact button
                         // DEV NOTE: Use GTA.Control.Whistle if Talk doesn't work
-                        if (Game.IsControlJustPressed(0, Control.Talk))
+                        if (Game.IsControlJustPressed(Control.Talk))
                         {
                             // Fade the screen out and freeze the player
-                            Game.FadeScreenOut(Config.Fade);
-                            Game.Player.Character.FreezePosition = true;
+                            Screen.FadeOut(config.Fade);
+                            Game.Player.Character.IsPositionFrozen = true;
                             // Wait for a seccond
                             Wait(1000);
                             // If the current time of the audio is the same as the total time
-                            if (AudioFile.CurrentTime == AudioFile.TotalTime)
+                            if (audioFile.CurrentTime == audioFile.TotalTime)
                             {
                                 // Stop the playback and reset the playtime
-                                Output.Stop();
-                                AudioFile.CurrentTime = TimeSpan.Zero;
+                                output.Stop();
+                                audioFile.CurrentTime = TimeSpan.Zero;
                             }
                             // Otherwise
                             else
                             {
                                 // Initialize the audio
-                                Output.Init(AudioFile);
+                                output.Init(audioFile);
                             }
 
                             // If the user wants the sound
-                            if (Config.Sound)
+                            if (config.Sound)
                             {
                                 // Play it
-                                Output.Play();
+                                output.Play();
                             }
                             // Otherwise
                             else
                             {
                                 // Mark an update as required and wait for the next tick
-                                UpdateRequired = true;
+                                updateRequired = true;
                             }
 
                             // Finally, search the dumpster
@@ -210,25 +223,29 @@ namespace DumpsterDiving
             }
 
             // If there was no dumpster found and the user was notified
-            if (!Found && Notified)
+            if (!found && notified)
             {
                 // A notification is required in the next tick
-                Notified = false;
+                notified = false;
             }
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
             // Make the tick update the playback
-            UpdateRequired = true;
+            updateRequired = true;
         }
+
+        #endregion
+
+        #region Functions
 
         private void SearchDumpster()
         {
             // Get a random item from the enum at the top
-            Items Item = (Items)Generator.Next(0, Enum.GetValues(typeof(Items)).Length);
+            Items Item = (Items)generator.Next(0, Enum.GetValues(typeof(Items)).Length);
             // Get the money that we should add
-            int Money = Item == Items.Money ? Generator.Next(Config.MoneyMinimum, Config.MoneyMaximum + 1) : 0;
+            int Money = Item == Items.Money ? generator.Next(config.MoneyMinimum, config.MoneyMaximum + 1) : 0;
 
             // See what the user got
             switch (Item)
@@ -270,13 +287,13 @@ namespace DumpsterDiving
             if (Item == Items.Money)
             {
                 // Format the item
-                UI.Notify(string.Format(Resources.ResourceManager.GetString($"Found{Item}"), Money));
+                Notification.Show(string.Format(Resources.ResourceManager.GetString($"Found{Item}"), Money));
             }
             // Otherwise
             else
             {
                 // Notify the player with the string as-is
-                UI.Notify(Resources.ResourceManager.GetString($"Found{Item}"));
+                Notification.Show(Resources.ResourceManager.GetString($"Found{Item}"));
             }
         }
 
@@ -292,5 +309,7 @@ namespace DumpsterDiving
             Game.Player.Character.Weapons.Select(Weapon);
             Game.Player.Character.Weapons.Current.Ammo += (Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2);
         }
+
+        #endregion
     }
 }
