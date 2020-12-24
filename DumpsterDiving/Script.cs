@@ -3,37 +3,15 @@ using GTA.Math;
 using GTA.UI;
 using NAudio.Wave;
 using Newtonsoft.Json;
+using PlayerCompanion;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace DumpsterDiving
 {
-    /// <summary>
-    /// The items that the player can get in the dumpsters.
-    /// </summary>
-    public enum Items
-    {
-        HotDog = 0,
-        Hamburger = 1,
-        MoldyHotDog = 2,
-        MoldyHamburger = 3,
-        Money = 4,
-        Dildo = 5,
-        Boot = 6,
-        Fish = 7,
-        Condom = 8,
-        Pistol = 9,
-        MicroSMG = 10,
-        AssaultRifle = 11,
-        Shotgun = 12,
-        SawnOffShotgun = 13,
-        Grenades = 14,
-        BZGas = 15,
-        TearGas = 16
-    }
-
     /// <summary>
     /// Script that allows you to perform dumpster diving
     /// </summary>
@@ -57,6 +35,10 @@ namespace DumpsterDiving
         /// Our random number generator.
         /// </summary>
         private readonly Random generator = new Random();
+        /// <summary>
+        /// The weapons to give randomly.
+        /// </summary>
+        private readonly List<WeaponHash> hashes = ((WeaponHash[])Enum.GetValues(typeof(WeaponHash))).ToList();
         /// <summary>
         /// If the game information should be updated after the playback.
         /// </summary>
@@ -160,7 +142,7 @@ namespace DumpsterDiving
             foreach (Prop DumpsterProp in nearbyDumpsters)
             {
                 // If the user wants blips and the dumpster doesn't have one
-                if (config.Blips && !DumpsterProp.AttachedBlip.Exists())
+                if (config.Blips && (DumpsterProp.AttachedBlip == null || !DumpsterProp.AttachedBlip.Exists()))
                 {
                     // Create the blip
                     Blip Current = DumpsterProp.AddBlip();
@@ -260,72 +242,41 @@ namespace DumpsterDiving
 
         private void SearchDumpster()
         {
-            // Get a random item from the enum at the top
-            Items Item = (Items)generator.Next(0, Enum.GetValues(typeof(Items)).Length);
-            // Get the money that we should add
-            int Money = Item == Items.Money ? generator.Next(config.MoneyMinimum, config.MoneyMaximum + 1) : 0;
+            // Get a number from 0 to 100 to calculate the channce
+            int chance = generator.Next(100);
 
-            // See what the user got
-            switch (Item)
+            // See what the user got and do what is necesary
+            // 0 to 45 - Item
+            if (chance <= 45f)
             {
-                case Items.HotDog:
-                case Items.Hamburger:
-                    Game.Player.Character.Health = Game.Player.Character.MaxHealth;
-                    break;
-                case Items.Money:
-                    Game.Player.Money += Money;
-                    break;
-                case Items.Pistol:
-                    Weapon(WeaponHash.Pistol);
-                    break;
-                case Items.MicroSMG:
-                    Weapon(WeaponHash.MicroSMG);
-                    break;
-                case Items.AssaultRifle:
-                    Weapon(WeaponHash.AssaultRifle);
-                    break;
-                case Items.Shotgun:
-                    Weapon(WeaponHash.PumpShotgun);
-                    break;
-                case Items.SawnOffShotgun:
-                    Weapon(WeaponHash.SawnOffShotgun);
-                    break;
-                case Items.Grenades:
-                    Weapon(WeaponHash.Grenade);
-                    break;
-                case Items.BZGas:
-                    Weapon(WeaponHash.BZGas);
-                    break;
-                case Items.TearGas:
-                    Weapon(WeaponHash.SmokeGrenade);
-                    break;
+                Item item = Companion.Inventories.GetRandomItem();
+                if (item == null)
+                {
+                    Notification.Show($"~r~Error~s~: Unable to give a random item to the user!");
+                    return;
+                }
+                Companion.Inventories.Current.Add(item);
+                Notification.Show($"You found ~g~{item.Name}~s~!");
             }
-
-            // If the player picked up money
-            if (Item == Items.Money)
+            // 45 to 90 - Weapon
+            else if (chance > 45 && chance <= 90)
             {
-                // Format the item
-                //Notification.Show(string.Format(Resources.ResourceManager.GetString($"Found{Item}"), Money));
+                WeaponHash hash = hashes[generator.Next(hashes.Count)];
+                if (!Game.Player.Character.Weapons.HasWeapon(hash))
+                {
+                    Game.Player.Character.Weapons.Give(hash, 0, true, true);
+                }
+                Game.Player.Character.Weapons.Select(hash);
+                Game.Player.Character.Weapons.Current.Ammo += Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2;
+                Notification.Show($"You found ~g~{Game.Player.Character.Weapons.Current.LocalizedName}~s~!");
             }
-            // Otherwise
-            else
+            // 90 to 100 - Money
+            else if (chance > 90)
             {
-                // Notify the player with the string as-is
-                //Notification.Show(Resources.ResourceManager.GetString($"Found{Item}"));
+                int money = generator.Next(config.MoneyMinimum, config.MoneyMaximum + 1);
+                Companion.Wallet.Money += money;
+                Notification.Show($"You found ~g~${money}~s~!");
             }
-        }
-
-        private static void Weapon(WeaponHash Weapon)
-        {
-            // If the player does not have the weapon, give one to him
-            if (!Game.Player.Character.Weapons.HasWeapon(Weapon))
-            {
-                Game.Player.Character.Weapons.Give(Weapon, 0, true, true);
-            }
-
-            // Then, select the weapon and give 2 magazines
-            Game.Player.Character.Weapons.Select(Weapon);
-            Game.Player.Character.Weapons.Current.Ammo += (Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2);
         }
 
         #endregion
