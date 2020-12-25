@@ -33,10 +33,12 @@
     <PackageReference Include="ScriptHookVDotNet3" Version="3.0.4">
       <IncludeAssets>compile</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="PlayerCompanion" Version="1.0.0">
+      <IncludeAssets>compile</IncludeAssets>
+    </PackageReference>
     <None Update="DumpsterDiving\Search.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <ProjectReference Include="..\PlayerCompanion\PlayerCompanion\PlayerCompanion.csproj" />
   </ItemGroup>
 
 </Project>
