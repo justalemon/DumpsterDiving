@@ -85,6 +85,9 @@ namespace DumpsterDiving
         /// </summary>
         public DumpsterDiving()
         {
+            // Clear a fade out just in case
+            Screen.FadeIn(0);
+
             // If the configuration file exists, load it
             // If not, create a new one
             string path = Path.Combine(location, "DumpsterDiving", "Config.json");
