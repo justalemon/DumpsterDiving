@@ -28,11 +28,14 @@ namespace DumpsterDiving.Items
             // Heal the player
             Game.Player.Character.HealthFloat = Game.Player.Character.MaxHealthFloat;
             // And reduce the count by one
-            Count -= 1;
             // If is equal or lower than 0, discard the item
-            if (Count <= 0)
+            if (Count == 1)
             {
                 Remove();
+            }
+            else
+            {
+                Count -= 1;
             }
         }
 
