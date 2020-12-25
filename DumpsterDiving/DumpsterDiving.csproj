@@ -8,7 +8,7 @@
     <Version>1.0</Version>
     <OutputPath>..\bin\$(Configuration)\</OutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>..\bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
 
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
