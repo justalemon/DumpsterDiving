@@ -1,4 +1,4 @@
-# LemonUI<br>[![AppVeyor][appveyor-img]][appveyor-url]  [![Discord][discord-img]][discord-url]
+# DumpsterDiving<br>[![AppVeyor][appveyor-img]][appveyor-url]  [![Discord][discord-img]][discord-url]
 
 DumpsterDiving is a mod for Grand Theft Auto V that allows you to loot almost any Dumpster in the game world for useful items... or trash... or money. It was inspired by the Dumpster Diving/Looting mechanic from Grand Theft Auto: Chinatown Wars.
 
