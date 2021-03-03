@@ -1,4 +1,4 @@
-# DumpsterDiving<br>[![AppVeyor][appveyor-img]][appveyor-url]  [![Discord][discord-img]][discord-url]
+# DumpsterDiving<br>[![AppVeyor][appveyor-img]][appveyor-url] [![Patreon][patreon-img]][patreon-url] [![PayPal][paypal-img]][paypal-url] [![Discord][discord-img]][discord-url]
 
 DumpsterDiving is a mod for Grand Theft Auto V that allows you to loot almost any Dumpster in the game world for useful items... or trash... or money. It was inspired by the Dumpster Diving/Looting mechanic from Grand Theft Auto: Chinatown Wars.
 
@@ -26,5 +26,9 @@ Just drag and drop all of the files inside of the 7zip into your **scripts** dir
 
 [appveyor-img]: https://img.shields.io/appveyor/build/justalemon/dumpsterdiving?label=appveyor
 [appveyor-url]: https://ci.appveyor.com/project/justalemon/dumpsterdiving
+[patreon-img]: https://img.shields.io/badge/support-patreon-FF424D.svg
+[patreon-url]: https://www.patreon.com/lemonchan
+[paypal-img]: https://img.shields.io/badge/support-paypal-0079C1.svg
+[paypal-url]: https://paypal.me/justalemon
 [discord-img]: https://img.shields.io/badge/discord-join-7289DA.svg
 [discord-url]: https://discord.gg/Cf6sspj
