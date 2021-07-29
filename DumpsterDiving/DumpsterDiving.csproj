@@ -33,7 +33,7 @@
     <PackageReference Include="ScriptHookVDotNet3" Version="3.1.0">
       <IncludeAssets>compile</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="PlayerCompanion" Version="1.0.0">
+    <PackageReference Include="PlayerCompanion" Version="1.2.2">
       <IncludeAssets>compile</IncludeAssets>
     </PackageReference>
     <None Update="DumpsterDiving\Search.mp3">
