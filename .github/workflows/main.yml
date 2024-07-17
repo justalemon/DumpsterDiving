@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4.1.6
-      - uses: actions/setup-dotnet@v4.0.0
+      - uses: actions/setup-dotnet@v4.0.1
         with:
           dotnet-version: "8.x"
       - run: dotnet restore ${{ github.event.repository.name }}.sln
@@ -40,7 +40,7 @@ jobs:
       - lint-and-compile
     steps:
       - uses: actions/checkout@v4.1.6
-      - uses: actions/setup-dotnet@v4.0.0
+      - uses: actions/setup-dotnet@v4.0.1
         with:
           dotnet-version: "8.0.x"
       - uses: actions/download-artifact@v4.1.8
