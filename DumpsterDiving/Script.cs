@@ -134,7 +134,7 @@ public class DumpsterDiving : Script
 
             Vector3 front = prop.GetOffsetPosition(new Vector3(0, -1f, 0));
 
-            if (World.GetDistance(Game.Player.Character.Position, prop.Position) <= config.MarkerDistance)
+            if (config.Markers && World.GetDistance(Game.Player.Character.Position, prop.Position) <= config.MarkerDistance)
             {
                 World.DrawMarker(MarkerType.VerticalCylinder, front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), config.Color);
             }
