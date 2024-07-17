@@ -46,6 +46,18 @@ public class Configuration
         "prop_dumpster_3a"
     ];
     /// <summary>
+    /// The different weapon hashes that could be found.
+    /// </summary>
+    [JsonConverter(typeof(InvalidConverter))]
+    [JsonProperty("weapons")]
+    public List<WeaponHash> Weapons { get; set; } = [
+        WeaponHash.Pistol,
+        WeaponHash.CeramicPistol,
+        WeaponHash.SNSPistol,
+        WeaponHash.MicroSMG,
+        WeaponHash.MiniSMG
+    ];
+    /// <summary>
     /// if the blips should be shown in the map.
     /// </summary>
     [JsonProperty("blips")]

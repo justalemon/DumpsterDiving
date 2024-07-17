@@ -26,7 +26,6 @@ public class DumpsterDiving : Script
 
     private readonly WaveOutEvent output = new WaveOutEvent();
     private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
-    private readonly List<WeaponHash> hashes = ((WeaponHash[])Enum.GetValues(typeof(WeaponHash))).ToList();
     private readonly List<Prop> nearbyDumpsters = [];
     private readonly Dictionary<Prop, int> dumpsterTimeout = [];
 
@@ -71,9 +70,9 @@ public class DumpsterDiving : Script
             Notification.Show($"You found ~g~{item.Name}~s~!");
         }
         // 45 to 90 - Weapon
-        else if (chance > 45 && chance <= 90)
+        else if (chance > 45 && chance <= 90 && config.Weapons.Count >= 1)
         {
-            WeaponHash hash = hashes[generator.Next(hashes.Count)];
+            WeaponHash hash = config.Weapons[generator.Next(config.Weapons.Count)];
             if (!Game.Player.Character.Weapons.HasWeapon(hash))
             {
                 Game.Player.Character.Weapons.Give(hash, 0, true, true);
