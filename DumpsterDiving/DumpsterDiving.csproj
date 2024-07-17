@@ -4,19 +4,26 @@
     <TargetFramework>net48</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <DefineConstants>SHVDN3</DefineConstants>
+    <AssemblyName>DumpsterDiving</AssemblyName>
+    <DefineConstants>SHVDN3,CLIENT</DefineConstants>
     <Version>3.0.1</Version>
     <OutputPath>..\bin\$(Configuration)\</OutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
 
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageId>DumpsterDiving</PackageId>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageId>$(ProjectName)</PackageId>
     <Authors>Hannele "Lemon" Ruiz</Authors>
     <Company>Hannele "Lemon" Ruiz</Company>
-    <Product>DumpsterDiving</Product>
+    <Product>$(ProjectName)</Product>
     <Description>Mod for Grand Theft Auto V that allows you to perform Dumpster Diving around in game.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/justalemon/DumpsterDiving</PackageProjectUrl>
