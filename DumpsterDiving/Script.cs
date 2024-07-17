@@ -27,15 +27,6 @@ namespace DumpsterDiving
         private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
         private readonly Random generator = new Random();
         private readonly List<WeaponHash> hashes = ((WeaponHash[])Enum.GetValues(typeof(WeaponHash))).ToList();
-        private readonly List<Model> dumpsterModels = [
-            new Model("prop_dumpster_01a"),
-            new Model("prop_dumpster_02a"),
-            new Model("prop_dumpster_02b"),
-            new Model("prop_dumpster_04a"),
-            new Model("prop_dumpster_4b"),
-            new Model("prop_dumpster_3a")
-        ];
-
         private bool updateRequired = false;
         private List<Prop> nearbyDumpsters = [];
         private int nextFetch = 0;
@@ -72,10 +63,10 @@ namespace DumpsterDiving
                 // Reset the list of dumpsters
                 nearbyDumpsters = new List<Prop>();
                 // Iterate over the dumpster models
-                foreach (Model DumpsterModel in dumpsterModels)
+                foreach (Model model in config.Models)
                 {
                     // Fill the list with all of those props
-                    nearbyDumpsters.AddRange(World.GetAllProps(DumpsterModel));
+                    nearbyDumpsters.AddRange(World.GetAllProps(model));
                 }
                 // Finally, set the next fetch time to one second in the future
                 nextFetch = Game.GameTime + 1000;

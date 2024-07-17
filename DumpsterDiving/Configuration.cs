@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GTA;
 using Newtonsoft.Json;
 using System.Drawing;
@@ -32,6 +33,18 @@ public class Configuration
 
     #region Properties
 
+    /// <summary>
+    /// The different models from the dumpsters.
+    /// </summary>
+    [JsonProperty("models")]
+    public List<string> Models { get; set; } = [
+        "prop_dumpster_01a",
+        "prop_dumpster_02a",
+        "prop_dumpster_02b",
+        "prop_dumpster_04a",
+        "prop_dumpster_4b",
+        "prop_dumpster_3a"
+    ];
     /// <summary>
     /// if the blips should be shown in the map.
     /// </summary>
