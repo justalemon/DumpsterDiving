@@ -4,9 +4,9 @@ DumpsterDiving is a mod for Grand Theft Auto V that allows you to loot almost an
 
 ## Download
 
-* [GitHub](https://github.com/justalemon/DumpsterDiving/releases)
+* [GitHub Releases](https://github.com/justalemon/DumpsterDiving/releases)
 * [5mods](https://www.gta5-mods.com/scripts/dumpsterdiving)
-* [AppVeyor](https://ci.appveyor.com/project/justalemon/dumpsterdiving) (experimental)
+* [GitHub Actions](https://github.com/justalemon/DumpsterDiving/actions) (experimental versions)
 
 ## Installation
 
