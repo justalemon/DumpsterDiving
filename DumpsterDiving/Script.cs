@@ -2,13 +2,13 @@
 using GTA.Math;
 using GTA.UI;
 using NAudio.Wave;
-using Newtonsoft.Json;
 using PlayerCompanion;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using GTA.Native;
 
 namespace DumpsterDiving
 {
@@ -97,7 +97,7 @@ namespace DumpsterDiving
                     {
                         if (!notified)
                         {
-                            Screen.ShowHelpTextThisFrame("Press ~INPUT_PICKUP~ to loot the dumpster.");
+                            Screen.ShowHelpText("Press ~INPUT_PICKUP~ to loot the dumpster.");
                             notified = true;
                         }
 
@@ -138,9 +138,11 @@ namespace DumpsterDiving
 
             if (!found && notified)
             {
+                Function.Call(Hash.CLEAR_ALL_HELP_MESSAGES);
+                Function.Call(Hash.CLEAR_HELP, true);
                 notified = false;
             }
-        } 
+        }
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
             updateRequired = true;
