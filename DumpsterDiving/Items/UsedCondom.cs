@@ -12,7 +12,7 @@ public class UsedCondom : BaseTrash
     /// <inheritdoc/>
     public override string Name => "Used Condom";
     /// <inheritdoc/>
-    public override ScaledTexture Icon => new ScaledTexture("", "");
+    public override ScaledTexture Icon => new ScaledTexture("lemon_dumpsterdiving", "used_condom");
 
     #endregion
 }

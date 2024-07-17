@@ -12,7 +12,7 @@ public class Hotdog : BaseHeal
     /// <inheritdoc/>
     public override string Name => "Hotdog";
     /// <inheritdoc/>
-    public override ScaledTexture Icon => new ScaledTexture("", "");
+    public override ScaledTexture Icon => new ScaledTexture("lemon_dumpsterdiving", "hotdog");
 
     #endregion
 }

@@ -12,7 +12,7 @@ public class Boot : BaseTrash
     /// <inheritdoc/>
     public override string Name => "Boot";
     /// <inheritdoc/>
-    public override ScaledTexture Icon => new ScaledTexture("", "");
+    public override ScaledTexture Icon => new ScaledTexture("lemon_dumpsterdiving", "boot");
 
     #endregion
 }

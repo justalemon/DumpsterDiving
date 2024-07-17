@@ -12,7 +12,7 @@ public class Burger : BaseHeal
     /// <inheritdoc/>
     public override string Name => "Burger";
     /// <inheritdoc/>
-    public override ScaledTexture Icon => new ScaledTexture("", "");
+    public override ScaledTexture Icon => new ScaledTexture("lemon_dumpsterdiving", "burger");
 
     #endregion
 }

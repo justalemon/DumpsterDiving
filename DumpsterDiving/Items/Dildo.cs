@@ -12,7 +12,7 @@ public class Dildo : BaseTrash
     /// <inheritdoc/>
     public override string Name => "Dildo";
     /// <inheritdoc/>
-    public override ScaledTexture Icon => new ScaledTexture("", "");
+    public override ScaledTexture Icon => new ScaledTexture("lemon_dumpsterdiving", "dildo");
 
     #endregion
 }

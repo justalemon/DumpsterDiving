@@ -12,7 +12,7 @@ public class MoldyBurger : BaseTrash
     /// <inheritdoc/>
     public override string Name => "Moldy Burger";
     /// <inheritdoc/>
-    public override ScaledTexture Icon => new ScaledTexture("", "");
+    public override ScaledTexture Icon => new ScaledTexture("lemon_dumpsterdiving", "moldy_burger");
 
     #endregion
 }

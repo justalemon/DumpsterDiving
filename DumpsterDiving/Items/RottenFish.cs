@@ -15,7 +15,7 @@ public class RottenFish : BaseTrash
     /// <inheritdoc/>
     public override string Name => "Rotten Fish";
     /// <inheritdoc/>
-    public override ScaledTexture Icon => new ScaledTexture("", "");
+    public override ScaledTexture Icon => new ScaledTexture("lemon_dumpsterdiving", "rotten_fish");
 
     #endregion
 }
