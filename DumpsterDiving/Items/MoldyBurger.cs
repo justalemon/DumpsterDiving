@@ -1,19 +1,18 @@
 ﻿using LemonUI.Elements;
 
-namespace DumpsterDiving.Items
+namespace DumpsterDiving.Items;
+
+/// <summary>
+/// A Moldy Burger.
+/// </summary>
+public class MoldyBurger : BaseTrash
 {
-    /// <summary>
-    /// A Moldy Burger.
-    /// </summary>
-    public class MoldyBurger : BaseTrash
-    {
-        #region Properties
+    #region Properties
 
-        /// <inheritdoc/>
-        public override string Name => "Moldy Burger";
-        /// <inheritdoc/>
-        public override ScaledTexture Icon => new ScaledTexture("", "");
+    /// <inheritdoc/>
+    public override string Name => "Moldy Burger";
+    /// <inheritdoc/>
+    public override ScaledTexture Icon => new ScaledTexture("", "");
 
-        #endregion
-    }
+    #endregion
 }

@@ -1,19 +1,18 @@
 ﻿using LemonUI.Elements;
 
-namespace DumpsterDiving.Items
+namespace DumpsterDiving.Items;
+
+/// <summary>
+/// A Boot.
+/// </summary>
+public class Boot : BaseTrash
 {
-    /// <summary>
-    /// A Boot.
-    /// </summary>
-    public class Boot : BaseTrash
-    {
-        #region Properties
+    #region Properties
 
-        /// <inheritdoc/>
-        public override string Name => "Boot";
-        /// <inheritdoc/>
-        public override ScaledTexture Icon => new ScaledTexture("", "");
+    /// <inheritdoc/>
+    public override string Name => "Boot";
+    /// <inheritdoc/>
+    public override ScaledTexture Icon => new ScaledTexture("", "");
 
-        #endregion
-    }
+    #endregion
 }

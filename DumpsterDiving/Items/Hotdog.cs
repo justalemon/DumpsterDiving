@@ -1,19 +1,18 @@
 ﻿using LemonUI.Elements;
 
-namespace DumpsterDiving.Items
+namespace DumpsterDiving.Items;
+
+/// <summary>
+/// A standard Hot Dog.
+/// </summary>
+public class Hotdog : BaseHeal
 {
-    /// <summary>
-    /// A standard Hot Dog.
-    /// </summary>
-    public class Hotdog : BaseHeal
-    {
-        #region Properties
+    #region Properties
 
-        /// <inheritdoc/>
-        public override string Name => "Hotdog";
-        /// <inheritdoc/>
-        public override ScaledTexture Icon => new ScaledTexture("", "");
+    /// <inheritdoc/>
+    public override string Name => "Hotdog";
+    /// <inheritdoc/>
+    public override ScaledTexture Icon => new ScaledTexture("", "");
 
-        #endregion
-    }
+    #endregion
 }
