@@ -23,6 +23,17 @@ Just drag and drop all of the files inside of the 7zip into your **scripts** dir
    * Money: Added to your wallet
    * Items: Added to your PlayerCompanion Inventory
    * Weapons: Added to your weapon Inventory
+   
+## Credits
+
+- Boot image by [vangoat25 @ Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Red_wing_boot.jpg) under CC BY-SA 3.0 Unported
+- Burger image by [Evan-Amos @ Wikimedia Commons](https://commons.wikimedia.org/wiki/File:NYC-Diner-Bacon-Cheeseburger.jpg) under Public Domain
+- Dildo image by [Paul Hurst @ Wikimedia Commons](https://upload.wikimedia.org/wikipedia/commons/c/ca/Jelly_Vibrator.jpg) under CC BY-SA 2.5 Generic
+- Hot Dog image by [US National Institutes of Health @ Wikimedia Commons](https://commons.wikimedia.org/wiki/File:NCI_Visuals_Food_Hot_Dog.jpg) under Public Domain
+- Moldy Burger edited by me, based off the Burger image by Evan-Amos
+- Moldy Hot Dog edited by me, based off the Hot Dog image by the US National Institutes of Health
+- Muskellunge image by [US Fish and Wildlife Service @ Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Muskellunge_USFWS.jpg) under Public Domain
+- Used Condom image by [Silar @ Wikimedia Commons](https://commons.wikimedia.org/wiki/File:02023_Used_condom_in_a_grass_ground.jpg) under CC BY-SA 4.0 International
 
 [actions-img]: https://img.shields.io/github/actions/workflow/status/justalemon/DumpsterDiving/main.yml?branch=master&label=actions
 [actions-url]: https://github.com/justalemon/DumpsterDiving/actions
