@@ -27,9 +27,9 @@ public class DumpsterDiving : Script
     private readonly WaveOutEvent output = new WaveOutEvent();
     private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
     private readonly List<WeaponHash> hashes = ((WeaponHash[])Enum.GetValues(typeof(WeaponHash))).ToList();
+    private readonly List<Prop> nearbyDumpsters = [];
 
     private bool updateRequired = false;
-    private List<Prop> nearbyDumpsters = [];
     private int nextFetch = 0;
     private bool notified = false;
     private bool found = false;
