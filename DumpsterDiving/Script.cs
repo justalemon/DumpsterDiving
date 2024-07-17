@@ -54,130 +54,95 @@ namespace DumpsterDiving
 
         private void OnTick(object sender, EventArgs e)
         {
-            // Set found to false
             found = false;
 
-            // If the current time is higher or equal than the next fetch time
             if (Game.GameTime >= nextFetch)
             {
-                // Reset the list of dumpsters
-                nearbyDumpsters = new List<Prop>();
-                // Iterate over the dumpster models
+                nearbyDumpsters.Clear();
+
                 foreach (Model model in config.Models)
                 {
-                    // Fill the list with all of those props
                     nearbyDumpsters.AddRange(World.GetAllProps(model));
                 }
-                // Finally, set the next fetch time to one second in the future
+
                 nextFetch = Game.GameTime + 1000;
             }
 
-            // If we need to update the playback
             if (updateRequired)
             {
-                // Disable the update
                 updateRequired = false;
-                // Fade in
                 Screen.FadeIn(config.Fade);
-                // And unfreeze the player
                 Game.Player.Character.IsPositionFrozen = false;
             }
 
-            // Iterate over the stored dumpsters
-            foreach (Prop DumpsterProp in nearbyDumpsters)
+            foreach (Prop prop in nearbyDumpsters)
             {
-                // If the user wants blips and the dumpster doesn't have one
-                if (config.Blips && (DumpsterProp.AttachedBlip == null || !DumpsterProp.AttachedBlip.Exists()))
+                if (config.Blips && (prop.AttachedBlip == null || !prop.AttachedBlip.Exists()))
                 {
-                    // Create the blip
-                    Blip Current = DumpsterProp.AddBlip();
-                    // And set the properties of it
-                    Current.Name = "Dumpster";
-                    Current.Color = config.BlipColor;
+                    Blip current = prop.AddBlip();
+                    current.Name = "Dumpster";
+                    current.Color = config.BlipColor;
                 }
 
-                // Get the position of the front
-                Vector3 Front = DumpsterProp.GetOffsetPosition(new Vector3(0, -1f, 0));
+                Vector3 front = prop.GetOffsetPosition(new Vector3(0, -1f, 0));
 
-                // If the distance is lower or equal to 25 units
-                if (World.GetDistance(Game.Player.Character.Position, DumpsterProp.Position) <= config.MarkerDistance)
+                if (World.GetDistance(Game.Player.Character.Position, prop.Position) <= config.MarkerDistance)
                 {
-                    // Draw a marker that will trigger the dumpster diving
-                    World.DrawMarker(MarkerType.VerticalCylinder, Front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), config.MarkerColor);
+                    World.DrawMarker(MarkerType.VerticalCylinder, front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), config.MarkerColor);
                 }
 
-                // If the player is on foot
                 if (Game.Player.Character.CurrentVehicle == null)
                 {
-                    // If the distance between the front and the player is lower or equal to 1.5
-                    if (World.GetDistance(Game.Player.Character.Position, Front) <= config.LootDistance)
+                    if (World.GetDistance(Game.Player.Character.Position, front) <= config.LootDistance)
                     {
-                        // If the user has not been notified
                         if (!notified)
                         {
-                            // Show the user
                             Screen.ShowHelpTextThisFrame("Press ~INPUT_PICKUP~ to loot the dumpster.");
-                            // And set the flag to true
                             notified = true;
                         }
 
-                        // Set the found variable to true
                         found = true;
 
-                        // If the player pressed the interact button
                         // DEV NOTE: Use GTA.Control.Whistle if Talk doesn't work
                         if (Game.IsControlJustPressed(Control.Talk))
                         {
-                            // Fade the screen out and freeze the player
                             Screen.FadeOut(config.Fade);
                             Game.Player.Character.IsPositionFrozen = true;
-                            // Wait for a seccond
+
                             Wait(1000);
-                            // If the current time of the audio is the same as the total time
+
                             if (audioFile.CurrentTime == audioFile.TotalTime)
                             {
-                                // Stop the playback and reset the playtime
                                 output.Stop();
                                 audioFile.CurrentTime = TimeSpan.Zero;
                             }
-                            // Otherwise
                             else
                             {
-                                // Initialize the audio
                                 output.Init(audioFile);
                             }
 
-                            // If the user wants the sound
                             if (config.Sound)
                             {
-                                // Play it
                                 output.Play();
                             }
-                            // Otherwise
                             else
                             {
-                                // Mark an update as required and wait for the next tick
                                 updateRequired = true;
                             }
 
-                            // Finally, search the dumpster
                             SearchDumpster();
                         }
                     }
                 }
             }
 
-            // If there was no dumpster found and the user was notified
             if (!found && notified)
             {
-                // A notification is required in the next tick
                 notified = false;
             }
-        }
-
+        } 
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
-            // Make the tick update the playback
             updateRequired = true;
         }
 
@@ -187,10 +152,8 @@ namespace DumpsterDiving
 
         private void SearchDumpster()
         {
-            // Get a number from 0 to 100 to calculate the channce
             int chance = generator.Next(100);
 
-            // See what the user got and do what is necesary
             // 0 to 45 - Item
             if (chance <= 45f)
             {
