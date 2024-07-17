@@ -20,6 +20,7 @@ public class DumpsterDiving : Script
 
     private static readonly string location = new Uri(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
     private static readonly Random generator = new Random();
+    private static readonly Dictionary<Prop, List<Item>> nextItem = [];
 
     private static Configuration config = Configuration.Load();
 
@@ -48,12 +49,19 @@ public class DumpsterDiving : Script
 
     #region Tools
 
-    private void SearchDumpster()
+    private void SearchDumpster(Prop prop)
     {
         int chance = generator.Next(100);
 
+        if (nextItem.TryGetValue(prop, out List<Item> items) && items.Count > 0)
+        {
+            Item item = items[generator.Next(items.Count)];
+            Companion.Inventories.Current.Add(item);
+            items.Remove(item);
+            Notification.Show($"You found ~g~{item.Name}~s~!");
+        }
         // 0 to 45 - Item
-        if (chance <= 45f)
+        else if (chance <= 45f)
         {
             Item item = Companion.Inventories.GetRandomItem();
             if (item == null)
@@ -148,7 +156,7 @@ public class DumpsterDiving : Script
                             Wait(1000);
                         }
 
-                        SearchDumpster();
+                        SearchDumpster(prop);
 
                         if (config.Fade >= 1)
                         {
@@ -183,5 +191,26 @@ public class DumpsterDiving : Script
         }
     }
 
+    #endregion
+    
+    #region Functions
+
+    /// <summary>
+    /// Adds a specific set of items for a dumpster.
+    /// </summary>
+    /// <param name="prop">The Dumpster prop to use.</param>
+    /// <param name="items">The items to add.</param>
+    public static void AddItemsForDumpster(Prop prop, params Item[] items)
+    {
+        if (nextItem.TryGetValue(prop, out List<Item> list))
+        {
+            list.AddRange(items);
+        }
+        else
+        {
+            nextItem.Add(prop, [..items]);
+        }
+    }
+    
     #endregion
 }
