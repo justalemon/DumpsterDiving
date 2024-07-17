@@ -19,61 +19,26 @@ namespace DumpsterDiving
     {
         #region Fields
 
-        /// <summary>
-        /// The location of the game script.
-        /// </summary>
         private static readonly string location = new Uri(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
-        /// <summary>
-        /// The audio output device.
-        /// </summary>
+
         private readonly WaveOutEvent output = new WaveOutEvent();
-        /// <summary>
-        /// The audio file that we are going to hear.
-        /// </summary>
         private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
-        /// <summary>
-        /// Our random number generator.
-        /// </summary>
         private readonly Random generator = new Random();
-        /// <summary>
-        /// The weapons to give randomly.
-        /// </summary>
         private readonly List<WeaponHash> hashes = ((WeaponHash[])Enum.GetValues(typeof(WeaponHash))).ToList();
-        /// <summary>
-        /// If the game information should be updated after the playback.
-        /// </summary>
-        private bool updateRequired = false;
-        /// <summary>
-        /// A list that contains models of dumpsters.
-        /// </summary>
-        private readonly List<Model> dumpsterModels = new List<Model>
-        {
+        private readonly List<Model> dumpsterModels = [
             new Model("prop_dumpster_01a"),
             new Model("prop_dumpster_02a"),
             new Model("prop_dumpster_02b"),
             new Model("prop_dumpster_04a"),
             new Model("prop_dumpster_4b"),
             new Model("prop_dumpster_3a")
-        };
-        /// <summary>
-        /// The configuration for our current script.
-        /// </summary>
+        ];
+
+        private bool updateRequired = false;
         private Configuration config = new Configuration();
-        /// <summary>
-        /// The dumpsters that exist arround the map.
-        /// </summary>
-        private List<Prop> nearbyDumpsters = new List<Prop>();
-        /// <summary>
-        /// Next game time that we should update the lists of peds.
-        /// </summary>
+        private List<Prop> nearbyDumpsters = [];
         private int nextFetch = 0;
-        /// <summary>
-        /// If the player has been notified about how to do the dumpster diving.
-        /// </summary>
         private bool notified = false;
-        /// <summary>
-        /// If a dumpster has been found.
-        /// </summary>
         private bool found = false;
 
         #endregion
@@ -85,7 +50,6 @@ namespace DumpsterDiving
         /// </summary>
         public DumpsterDiving()
         {
-            // Clear a fade out just in case
             Screen.FadeIn(0);
 
             // If the configuration file exists, load it
