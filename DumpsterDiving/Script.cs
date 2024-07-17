@@ -28,6 +28,7 @@ public class DumpsterDiving : Script
     private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
     private readonly List<WeaponHash> hashes = ((WeaponHash[])Enum.GetValues(typeof(WeaponHash))).ToList();
     private readonly List<Prop> nearbyDumpsters = [];
+    private readonly Dictionary<Prop, int> dumpsterTimeout = [];
 
     private bool updateRequired = false;
     private int nextFetch = 0;
@@ -119,6 +120,11 @@ public class DumpsterDiving : Script
 
         foreach (Prop prop in nearbyDumpsters)
         {
+            if (dumpsterTimeout.ContainsKey(prop))
+            {
+                continue;
+            }
+
             if (config.Blips && (prop.AttachedBlip == null || !prop.AttachedBlip.Exists()))
             {
                 Blip current = prop.AddBlip();
@@ -172,8 +178,23 @@ public class DumpsterDiving : Script
                         }
 
                         SearchDumpster();
+
+                        if (config.LootTimer > 0)
+                        {
+                            dumpsterTimeout[prop] = Game.GameTime + (config.LootTimer * 60 * 1000);
+                            prop.IsPersistent = true;
+                        }
                     }
                 }
+            }
+        }
+
+        foreach (Prop prop in dumpsterTimeout.Keys.ToList())
+        {
+            if (!prop.Exists() || dumpsterTimeout[prop] <= Game.GameTime)
+            {
+                dumpsterTimeout.Remove(prop);
+                prop.IsPersistent = false;
             }
         }
 

@@ -81,6 +81,11 @@ public class Configuration
     [JsonProperty("moneymax")]
     public int MoneyMaximum { get; set; } = 1000;
     /// <summary>
+    /// The timer after looting a dumpster where it will be unavailable, in minutes.
+    /// </summary>
+    [JsonProperty("loot_timer")]
+    public int LootTimer { get; set; } = 5;
+    /// <summary>
     /// The colors of the markers.
     /// </summary>
     [JsonConverter(typeof(ColorConverter))]
