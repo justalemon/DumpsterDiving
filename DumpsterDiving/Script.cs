@@ -50,7 +50,48 @@ namespace DumpsterDiving
 
         #endregion
 
-        #region Events
+        #region Tools
+
+        private void SearchDumpster()
+        {
+            int chance = generator.Next(100);
+
+            // 0 to 45 - Item
+            if (chance <= 45f)
+            {
+                Item item = Companion.Inventories.GetRandomItem();
+                if (item == null)
+                {
+                    Notification.Show($"~r~Error~s~: Unable to give a random item to the user!");
+                    return;
+                }
+                Companion.Inventories.Current.Add(item);
+                Notification.Show($"You found ~g~{item.Name}~s~!");
+            }
+            // 45 to 90 - Weapon
+            else if (chance > 45 && chance <= 90)
+            {
+                WeaponHash hash = hashes[generator.Next(hashes.Count)];
+                if (!Game.Player.Character.Weapons.HasWeapon(hash))
+                {
+                    Game.Player.Character.Weapons.Give(hash, 0, true, true);
+                }
+                Game.Player.Character.Weapons.Select(hash);
+                Game.Player.Character.Weapons.Current.Ammo += Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2;
+                Notification.Show($"You found ~g~{Game.Player.Character.Weapons.Current.LocalizedName}~s~!");
+            }
+            // 90 to 100 - Money
+            else if (chance > 90)
+            {
+                int money = generator.Next(config.MoneyMinimum, config.MoneyMaximum + 1);
+                Companion.Wallet.Money += money;
+                Notification.Show($"You found ~g~${money}~s~!");
+            }
+        }
+
+        #endregion
+
+        #region Event Functions
 
         private void OnTick(object sender, EventArgs e)
         {
@@ -146,47 +187,6 @@ namespace DumpsterDiving
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
             updateRequired = true;
-        }
-
-        #endregion
-
-        #region Functions
-
-        private void SearchDumpster()
-        {
-            int chance = generator.Next(100);
-
-            // 0 to 45 - Item
-            if (chance <= 45f)
-            {
-                Item item = Companion.Inventories.GetRandomItem();
-                if (item == null)
-                {
-                    Notification.Show($"~r~Error~s~: Unable to give a random item to the user!");
-                    return;
-                }
-                Companion.Inventories.Current.Add(item);
-                Notification.Show($"You found ~g~{item.Name}~s~!");
-            }
-            // 45 to 90 - Weapon
-            else if (chance > 45 && chance <= 90)
-            {
-                WeaponHash hash = hashes[generator.Next(hashes.Count)];
-                if (!Game.Player.Character.Weapons.HasWeapon(hash))
-                {
-                    Game.Player.Character.Weapons.Give(hash, 0, true, true);
-                }
-                Game.Player.Character.Weapons.Select(hash);
-                Game.Player.Character.Weapons.Current.Ammo += Game.Player.Character.Weapons.Current.MaxAmmoInClip * 2;
-                Notification.Show($"You found ~g~{Game.Player.Character.Weapons.Current.LocalizedName}~s~!");
-            }
-            // 90 to 100 - Money
-            else if (chance > 90)
-            {
-                int money = generator.Next(config.MoneyMinimum, config.MoneyMaximum + 1);
-                Companion.Wallet.Money += money;
-                Notification.Show($"You found ~g~${money}~s~!");
-            }
         }
 
         #endregion
