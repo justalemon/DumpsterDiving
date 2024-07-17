@@ -22,9 +22,7 @@ public class Configuration
     private static readonly JsonSerializerSettings settings = new JsonSerializerSettings
     {
         ObjectCreationHandling = ObjectCreationHandling.Replace,
-        Converters = [
-            new StringEnumConverter()
-        ],
+        Converters = [],
         Formatting = Formatting.Indented,
         Culture = CultureInfo.InvariantCulture
     };
@@ -48,7 +46,6 @@ public class Configuration
     /// <summary>
     /// The different weapon hashes that could be found.
     /// </summary>
-    [JsonConverter(typeof(InvalidConverter))]
     [JsonProperty("weapons")]
     public List<WeaponHash> Weapons { get; set; } = [
         WeaponHash.Pistol,
