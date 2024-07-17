@@ -1,60 +1,119 @@
-﻿using GTA;
+﻿using System;
+using GTA;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using GTA.UI;
+using Newtonsoft.Json.Converters;
 
-namespace DumpsterDiving
+namespace DumpsterDiving;
+
+/// <summary>
+/// The configuration of the mod.
+/// </summary>
+public class Configuration
 {
-    /// <summary>
-    /// The configuration of DumpsterDiving.
-    /// </summary>
-    public class Configuration
+    #region Fields
+
+    private static readonly string path = Path.ChangeExtension(new Uri(Assembly.GetAssembly(typeof(Configuration)).CodeBase).LocalPath, ".json");
+    private static readonly JsonSerializerSettings settings = new JsonSerializerSettings
     {
-        /// <summary>
-        /// if the blips should be shown in the map.
-        /// </summary>
-        [JsonProperty("blips")]
-        public bool Blips { get; set; } = true;
-        /// <summary>
-        /// If a sound should be played when looting.
-        /// </summary>
-        [JsonProperty("sound")]
-        public bool Sound { get; set; } = true;
-        /// <summary>
-        /// The duration of the fade in milliseconds.
-        /// </summary>
-        [JsonProperty("fade")]
-        public int Fade { get; set; } = 250;
-        /// <summary>
-        /// The distance to the dumpsters for the markers to appear.
-        /// </summary>
-        [JsonProperty("markerdistance")]
-        public float MarkerDistance { get; set; } = 25;
-        /// <summary>
-        /// The distance to the marker to loot the dumpster.
-        /// </summary>
-        [JsonProperty("lootdistance")]
-        public float LootDistance { get; set; } = 1.5f;
-        /// <summary>
-        /// The minimum ammount of money to give.
-        /// </summary>
-        [JsonProperty("moneymin")]
-        public int MoneyMinimum { get; set; } = 10;
-        /// <summary>
-        /// The maximum ammount of money to give.
-        /// </summary>
-        [JsonProperty("moneymax")]
-        public int MoneyMaximum { get; set; } = 1000;
-        /// <summary>
-        /// The colors of the markers.
-        /// </summary>
-        [JsonConverter(typeof(ColorConverter))]
-        [JsonProperty("markercolor")]
-        public Color MarkerColor { get; set; } = Color.IndianRed;
-        /// <summary>
-        /// The color of the blips in the map.
-        /// </summary>
-        [JsonProperty("blipcolor")]
-        public BlipColor BlipColor { get; set; } = BlipColor.RedLight;
+        ObjectCreationHandling = ObjectCreationHandling.Replace,
+        Converters = [
+            new StringEnumConverter()
+        ],
+        Formatting = Formatting.Indented,
+        Culture = CultureInfo.InvariantCulture
+    };
+
+    #endregion
+
+    #region Properties
+
+    /// <summary>
+    /// if the blips should be shown in the map.
+    /// </summary>
+    [JsonProperty("blips")]
+    public bool Blips { get; set; } = true;
+    /// <summary>
+    /// If a sound should be played when looting.
+    /// </summary>
+    [JsonProperty("sound")]
+    public bool Sound { get; set; } = true;
+    /// <summary>
+    /// The duration of the fade in milliseconds.
+    /// </summary>
+    [JsonProperty("fade")]
+    public int Fade { get; set; } = 250;
+    /// <summary>
+    /// The distance to the dumpsters for the markers to appear.
+    /// </summary>
+    [JsonProperty("markerdistance")]
+    public float MarkerDistance { get; set; } = 25;
+    /// <summary>
+    /// The distance to the marker to loot the dumpster.
+    /// </summary>
+    [JsonProperty("lootdistance")]
+    public float LootDistance { get; set; } = 1.5f;
+    /// <summary>
+    /// The minimum ammount of money to give.
+    /// </summary>
+    [JsonProperty("moneymin")]
+    public int MoneyMinimum { get; set; } = 10;
+    /// <summary>
+    /// The maximum ammount of money to give.
+    /// </summary>
+    [JsonProperty("moneymax")]
+    public int MoneyMaximum { get; set; } = 1000;
+    /// <summary>
+    /// The colors of the markers.
+    /// </summary>
+    [JsonConverter(typeof(ColorConverter))]
+    [JsonProperty("markercolor")]
+    public Color MarkerColor { get; set; } = Color.IndianRed;
+    /// <summary>
+    /// The color of the blips in the map.
+    /// </summary>
+    [JsonProperty("blipcolor")]
+    public BlipColor BlipColor { get; set; } = BlipColor.RedLight;
+
+    #endregion
+
+    #region Functions
+
+    /// <summary>
+    /// Saves the configuration.
+    /// </summary>
+    public void Save()
+    {
+        string contents = JsonConvert.SerializeObject(this, settings);
+        File.WriteAllText(path, contents);
     }
+    /// <summary>
+    /// Gets the current configuration.
+    /// </summary>
+    /// <returns>The current configuration, or a new configuration if is not present.</returns>
+    public static Configuration Load()
+    {
+        try
+        {
+            string contents = File.ReadAllText(path);
+            return JsonConvert.DeserializeObject<Configuration>(contents, settings);
+        }
+        catch (FileNotFoundException)
+        {
+            Configuration config = new Configuration();
+            config.Save();
+            return config;
+        }
+        catch (Exception e)
+        {
+            Notification.Show($"~r~Error~w~: Unable to load config: {e.Message}");
+            return new Configuration();
+        }
+    }
+
+    #endregion
 }
