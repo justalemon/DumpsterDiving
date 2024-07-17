@@ -1,7 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
 using GTA.UI;
-using NAudio.Wave;
 using PlayerCompanion;
 using System;
 using System.Collections.Generic;
@@ -24,12 +23,9 @@ public class DumpsterDiving : Script
 
     private static Configuration config = Configuration.Load();
 
-    private readonly WaveOutEvent output = new WaveOutEvent();
-    private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
     private readonly List<Prop> nearbyDumpsters = [];
     private readonly Dictionary<Prop, int> dumpsterTimeout = [];
 
-    private bool updateRequired = false;
     private int nextFetch = 0;
     private bool notified = false;
     private bool found = false;
@@ -46,7 +42,6 @@ public class DumpsterDiving : Script
         Screen.FadeIn(0);
 
         Tick += OnTick;
-        output.PlaybackStopped += OnPlaybackStopped;
     }
 
     #endregion
@@ -110,13 +105,6 @@ public class DumpsterDiving : Script
             nextFetch = Game.GameTime + 1000;
         }
 
-        if (updateRequired)
-        {
-            updateRequired = false;
-            Screen.FadeIn(config.Fade);
-            Game.Player.Character.IsPositionFrozen = false;
-        }
-
         foreach (Prop prop in nearbyDumpsters)
         {
             if (dumpsterTimeout.ContainsKey(prop))
@@ -157,26 +145,10 @@ public class DumpsterDiving : Script
 
                         Wait(1000);
 
-                        if (audioFile.CurrentTime == audioFile.TotalTime)
-                        {
-                            output.Stop();
-                            audioFile.CurrentTime = TimeSpan.Zero;
-                        }
-                        else
-                        {
-                            output.Init(audioFile);
-                        }
-
-                        if (config.Sound)
-                        {
-                            output.Play();
-                        }
-                        else
-                        {
-                            updateRequired = true;
-                        }
-
                         SearchDumpster();
+
+                        Screen.FadeIn(config.Fade);
+                        Game.Player.Character.IsPositionFrozen = false;
 
                         if (config.LootTimer > 0)
                         {
@@ -203,10 +175,6 @@ public class DumpsterDiving : Script
             Function.Call(Hash.CLEAR_HELP, true);
             notified = false;
         }
-    }
-    private void OnPlaybackStopped(object sender, StoppedEventArgs e)
-    {
-        updateRequired = true;
     }
 
     #endregion
