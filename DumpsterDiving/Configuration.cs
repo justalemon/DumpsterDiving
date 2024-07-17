@@ -68,22 +68,22 @@ public class Configuration
     /// <summary>
     /// The distance to the dumpsters for the markers to appear.
     /// </summary>
-    [JsonProperty("markerdistance")]
+    [JsonProperty("marker_distance")]
     public float MarkerDistance { get; set; } = 25;
     /// <summary>
     /// The distance to the marker to loot the dumpster.
     /// </summary>
-    [JsonProperty("lootdistance")]
+    [JsonProperty("loot_distance")]
     public float LootDistance { get; set; } = 1.5f;
     /// <summary>
-    /// The minimum ammount of money to give.
+    /// The minimum amount of money to give.
     /// </summary>
-    [JsonProperty("moneymin")]
+    [JsonProperty("money_min")]
     public int MoneyMinimum { get; set; } = 10;
     /// <summary>
-    /// The maximum ammount of money to give.
+    /// The maximum amount of money to give.
     /// </summary>
-    [JsonProperty("moneymax")]
+    [JsonProperty("money_max")]
     public int MoneyMaximum { get; set; } = 1000;
     /// <summary>
     /// The timer after looting a dumpster where it will be unavailable, in minutes.
