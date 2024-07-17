@@ -20,13 +20,14 @@ namespace DumpsterDiving
         #region Fields
 
         private static readonly string location = new Uri(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
+        private static readonly Random generator = new Random();
 
         private static Configuration config = Configuration.Load();
 
         private readonly WaveOutEvent output = new WaveOutEvent();
         private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
-        private readonly Random generator = new Random();
         private readonly List<WeaponHash> hashes = ((WeaponHash[])Enum.GetValues(typeof(WeaponHash))).ToList();
+
         private bool updateRequired = false;
         private List<Prop> nearbyDumpsters = [];
         private int nextFetch = 0;
