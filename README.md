@@ -10,7 +10,7 @@ DumpsterDiving is a mod for Grand Theft Auto V that allows you to loot almost an
 
 ## Installation
 
-*Please note that you need to install [PlayerCompanion](https://www.gta5-mods.com/scripts/playercompanion) and [LemonUI](https://www.gta5-mods.com/tools/lemonui) for DumpsterDiving to work.*
+*Please note that you need to install [ScriptHookVDotNet](https://github.com/scripthookvdotnet/scripthookvdotnet) and [its requirements](https://github.com/scripthookvdotnet/scripthookvdotnet?tab=readme-ov-file#requirements), [PlayerCompanion](https://www.gta5-mods.com/scripts/playercompanion) and [LemonUI](https://www.gta5-mods.com/tools/lemonui) for DumpsterDiving to work.*
 
 Open the compressed file with 7zip or WinRar and drag and drop all the files into your **scripts** directory.
 
