@@ -49,12 +49,12 @@ public class Configuration
     /// if the blips should be shown in the map.
     /// </summary>
     [JsonProperty("blips")]
-    public bool Blips { get; set; } = true;
+    public bool Blips { get; set; } = false;
     /// <summary>
     /// If the markers should be shown in front of the dumpsters.
     /// </summary>
     [JsonProperty("markers")]
-    public bool Markers { get; set; } = true;
+    public bool Markers { get; set; } = false;
     /// <summary>
     /// If a sound should be played when looting.
     /// </summary>
