@@ -84,13 +84,8 @@ public class Configuration
     /// The colors of the markers.
     /// </summary>
     [JsonConverter(typeof(ColorConverter))]
-    [JsonProperty("markercolor")]
-    public Color MarkerColor { get; set; } = Color.IndianRed;
-    /// <summary>
-    /// The color of the blips in the map.
-    /// </summary>
-    [JsonProperty("blipcolor")]
-    public BlipColor BlipColor { get; set; } = BlipColor.RedLight;
+    [JsonProperty("color")]
+    public Color Color { get; set; } = Color.FromArgb(200, Color.HotPink);
 
     #endregion
 

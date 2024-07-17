@@ -123,14 +123,14 @@ public class DumpsterDiving : Script
             {
                 Blip current = prop.AddBlip();
                 current.Name = "Dumpster";
-                current.Color = config.BlipColor;
+                Function.Call(Hash.SET_BLIP_COLOUR, current.Handle, (config.Color.R << 24) + (config.Color.G << 16) + (config.Color.B << 8) + config.Color.A);
             }
 
             Vector3 front = prop.GetOffsetPosition(new Vector3(0, -1f, 0));
 
             if (World.GetDistance(Game.Player.Character.Position, prop.Position) <= config.MarkerDistance)
             {
-                World.DrawMarker(MarkerType.VerticalCylinder, front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), config.MarkerColor);
+                World.DrawMarker(MarkerType.VerticalCylinder, front, Vector3.Zero, Vector3.Zero, new Vector3(0.7f, 0.7f, 0.7f), config.Color);
             }
 
             if (Game.Player.Character.CurrentVehicle == null)
