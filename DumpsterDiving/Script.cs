@@ -21,6 +21,8 @@ namespace DumpsterDiving
 
         private static readonly string location = new Uri(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
 
+        private static Configuration config = Configuration.Load();
+
         private readonly WaveOutEvent output = new WaveOutEvent();
         private readonly AudioFileReader audioFile = new AudioFileReader(Path.Combine(location, "DumpsterDiving", "Search.mp3"));
         private readonly Random generator = new Random();
@@ -35,7 +37,6 @@ namespace DumpsterDiving
         ];
 
         private bool updateRequired = false;
-        private Configuration config = new Configuration();
         private List<Prop> nearbyDumpsters = [];
         private int nextFetch = 0;
         private bool notified = false;
@@ -52,20 +53,6 @@ namespace DumpsterDiving
         {
             Screen.FadeIn(0);
 
-            // If the configuration file exists, load it
-            // If not, create a new one
-            string path = Path.Combine(location, "DumpsterDiving", "Config.json");
-            if (File.Exists(path))
-            {
-                string contents = File.ReadAllText(path);
-                config = JsonConvert.DeserializeObject<Configuration>(contents);
-            }
-            else
-            {
-                File.WriteAllText(path, JsonConvert.SerializeObject(config));
-            }
-
-            // Then just add the events
             Tick += OnTick;
             output.PlaybackStopped += OnPlaybackStopped;
         }
