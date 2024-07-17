@@ -140,15 +140,21 @@ public class DumpsterDiving : Script
 
                     if (Game.IsControlJustPressed(Control.Context))
                     {
-                        Screen.FadeOut(config.Fade);
-                        Game.Player.Character.IsPositionFrozen = true;
+                        if (config.Fade >= 1)
+                        {
+                            Screen.FadeOut(config.Fade);
+                            Game.Player.Character.IsPositionFrozen = true;
 
-                        Wait(1000);
+                            Wait(1000);
+                        }
 
                         SearchDumpster();
 
-                        Screen.FadeIn(config.Fade);
-                        Game.Player.Character.IsPositionFrozen = false;
+                        if (config.Fade >= 1)
+                        {
+                            Screen.FadeIn(config.Fade);
+                            Game.Player.Character.IsPositionFrozen = false;
+                        }
 
                         if (config.LootTimer > 0)
                         {
