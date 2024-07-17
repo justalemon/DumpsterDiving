@@ -139,14 +139,13 @@ public class DumpsterDiving : Script
                 {
                     if (!notified)
                     {
-                        Screen.ShowHelpText("Press ~INPUT_PICKUP~ to loot the dumpster.");
+                        Screen.ShowHelpText("Press ~INPUT_CONTEXT~ to loot the dumpster.");
                         notified = true;
                     }
 
                     found = true;
 
-                    // DEV NOTE: Use GTA.Control.Whistle if Talk doesn't work
-                    if (Game.IsControlJustPressed(Control.Talk))
+                    if (Game.IsControlJustPressed(Control.Context))
                     {
                         Screen.FadeOut(config.Fade);
                         Game.Player.Character.IsPositionFrozen = true;
