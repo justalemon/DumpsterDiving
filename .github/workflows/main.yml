@@ -29,7 +29,7 @@ jobs:
           csproj-files: "**/**.csproj"
       - working-directory: ${{ env.GITHUB_WORKSPACE }}
         run: dotnet build ${{ github.event.repository.name }}.sln -c ${{ matrix.configuration }}
-      - uses: actions/upload-artifact@v4.4.0
+      - uses: actions/upload-artifact@v4.4.3
         with:
           name: ${{ github.event.repository.name }}.${{ matrix.configuration }}
           path: bin/${{ matrix.configuration }}
